@@ -1,12 +1,12 @@
 import React from "react"
-import { XIcon, ChevronDownIcon } from '@heroicons/react/outline'
+import { XIcon, ChevronDownIcon } from "@heroicons/react/outline";
 
 export interface ItemProps {
-    readonly title: string
+    readonly title: string;
 }
 
 interface ItemState {
-    readonly isToggled: Boolean
+    readonly isToggled: Boolean;
 }
 
 export class AccordionItem extends React.PureComponent<ItemProps, ItemState> {
@@ -18,8 +18,8 @@ export class AccordionItem extends React.PureComponent<ItemProps, ItemState> {
         this.onToggleClick = this.onToggleClick.bind(this);
     }
     
-    private onToggleClick() {
-        this.setState(state => ({isToggled: !state.isToggled}))
+    private onToggleClick(): void {
+        this.setState(state => ({isToggled: !state.isToggled}));
     }
 
     public render(): React.ReactNode {
@@ -39,6 +39,6 @@ export class AccordionItem extends React.PureComponent<ItemProps, ItemState> {
                     </div>
                 }
             </div>
-        )
+        );
     }
 }
