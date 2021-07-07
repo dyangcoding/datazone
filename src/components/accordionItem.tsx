@@ -3,6 +3,7 @@ import { XIcon, ChevronDownIcon } from "@heroicons/react/outline";
 
 export interface ItemProps {
     readonly title: string;
+    readonly children: React.ReactNode;
 }
 
 interface ItemState {
@@ -31,13 +32,7 @@ export class AccordionItem extends React.PureComponent<ItemProps, ItemState> {
                         {this.state.isToggled ? <XIcon className="h-6 w-6" /> : <ChevronDownIcon className="h-6 w-6"/>}
                     </div>
                 </div>
-                {
-                    this.state.isToggled 
-                        && 
-                    <div className="blockquote text-left bg-white my-2 pl-4 py-2 text-secondary text-sm">
-                        {this.props.children}
-                    </div>
-                }
+                {this.state.isToggled && this.props.children}
             </div>
         );
     }
