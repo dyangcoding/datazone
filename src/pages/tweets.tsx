@@ -20,10 +20,10 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
     public render(): React.ReactNode {
         return (
             <React.Fragment>
-                {this.renderHeader}
-                {this.renderInfo}
-                {this.renderSearchSection}
-                {this.renderTweets}
+                {this.renderHeader()}
+                {this.renderInfo()}
+                {this.renderSearchSection()}
+                {this.renderTweets()}
             </React.Fragment>
         );
     }
