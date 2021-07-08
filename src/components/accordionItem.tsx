@@ -3,7 +3,6 @@ import { XIcon, ChevronDownIcon } from "@heroicons/react/outline";
 
 export interface ItemProps {
     readonly title: string;
-    readonly children: React.ReactNode;
 }
 
 interface ItemState {
