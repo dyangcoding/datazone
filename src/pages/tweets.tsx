@@ -1,6 +1,8 @@
 import React from "react";
-import { XIcon, SearchIcon } from "@heroicons/react/outline";
+import { SearchIcon } from "@heroicons/react/outline";
 import { AccordionItem } from "../components/accordionItem";
+import { RuleSearchForm } from "../rules/rule-search-form";
+import { OptionsSearchForm } from "../rules/options-search-form";
 
 interface TweetProps {
 
@@ -78,10 +80,10 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
                     <div className="shadow overflow-hidden sm:rounded-md">
                         <div className="px-4 py-5 bg-white sm:p-6">
                             <AccordionItem title="Standard Suche">
-                                {this.renderStandard()}
+                                <RuleSearchForm />
                             </AccordionItem>
                             <AccordionItem title="Optionale Suche">
-                                {this.renderOptions()}
+                                <OptionsSearchForm />
                             </AccordionItem>
                             <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                                 <button type="submit"
@@ -97,217 +99,6 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
             );
         }
         return null;
-    }
-
-    private renderStandard(): React.ReactNode {
-        return (
-            <div className="mt-5 md:mt-0 md:col-span-2">
-                <form action="#" method="POST">
-                    <div className="px-4 py-5 bg-white sm:p-6">
-                        <div className="grid grid-cols-4 gap-6">
-                            <div className="col-span-4">
-                                <label htmlFor="keyword" className="flex items-center justify-between text-sm font-medium text-gray-700">
-                                    Keyword
-                                    <span className="text-gray-400">Max. 256 Characters</span>
-                                </label>
-                                <input type="text" name="keyword" id="keyword" autoComplete="keyword"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                            </div>
-
-                            <div className="col-span-2">
-                                <label htmlFor="hashtags" className="block text-sm font-medium text-gray-700">
-                                    Hashtag
-                                </label>
-                                <input type="text" name="hashtags" id="hashtags" autoComplete="given-name"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                            </div>
-
-                            <div className="col-span-2">
-                                <label htmlFor="emoji" className="block text-sm font-medium text-gray-700">
-                                    Emoji
-                                </label>
-                                <input type="text" name="emoji" id="emoji" autoComplete="family-name"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                            </div>
-
-                            <div className="col-span-1">
-                                <label htmlFor="user" className="block text-sm font-medium text-gray-700">
-                                    User
-                                </label>
-                                <input type="text" name="user" id="user" autoComplete="user"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                            </div>
-
-                            <div className="col-span-1">
-                                <label htmlFor="from-user" className="block text-sm font-medium text-gray-700">
-                                    From User
-                                </label>
-                                <input type="text" name="from-user" id="from-user" autoComplete="from-user"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                            </div>
-
-                            <div className="col-span-1">
-                                <label htmlFor="to-user" className="block text-sm font-medium text-gray-700">
-                                    To User
-                                </label>
-                                <input type="text" name="to-user" id="to-user" autoComplete="to-user"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                            </div>
-
-                            <div className="col-span-1">
-                                <label htmlFor="retweet-of-user" className="block text-sm font-medium text-gray-700">
-                                    Retweet of User
-                                </label>
-                                <input type="text" name="retweet-of-user" id="retweet-of-user" autoComplete="retweet-of-user"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                            </div>
-
-                            <div className="col-span-2">
-                                <label htmlFor="url" className="block text-sm font-medium text-gray-700">
-                                    Url
-                                </label>
-                                <div className="mt-1 flex rounded-md shadow-sm">
-                                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                                        https://
-                                    </span>
-                                    <input type="text" name="url" id="url"
-                                        className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"/>
-                                </div>
-                            </div>
-
-                            <div className="col-span-2">
-                                <label htmlFor="conversation" className="block text-sm font-medium text-gray-700">
-                                    Conversation
-                                </label>
-                                <input type="text" name="conversation" id="conversation"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                            </div>
-
-                            <div className="col-span-2">
-                                <label htmlFor="context" className="block text-sm font-medium text-gray-700">
-                                    Context
-                                </label>
-                                <input type="text" name="context" id="context"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                            </div>
-
-                            <div className="col-span-2">
-                                <label htmlFor="entity" className="block text-sm font-medium text-gray-700">
-                                    Entity
-                                </label>
-                                <input type="text" name="entity" id="entity"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        );
-    }
-
-    private renderOptions(): React.ReactNode {
-        return (
-            <div className="mt-5 md:mt-0 md:col-span-2">
-                <form action="#" method="POST">
-                    <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
-                        <fieldset>
-                            <legend className="text-base font-medium text-gray-900">By Tweet Type</legend>
-                            <div className="flex mt-4">
-                                <div className="flex items-start h-5">
-                                    <input id="is-retweet" name="is-retweet" type="checkbox"
-                                        className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                                </div>
-                                <div className="ml-3 text-sm">
-                                    <label htmlFor="is-retweet" className="font-medium text-gray-700">
-                                        Is Retweet
-                                    </label>
-                                    <p className="text-gray-500">Matches on Retweets that match the rest of the specified rule.</p>
-                                </div>
-                                <div className="flex items-start h-5">
-                                    <input id="is-verified" name="is-verified" type="checkbox"
-                                        className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                                </div>
-                                <div className="ml-3 text-sm">
-                                    <label htmlFor="is-verified" className="font-medium text-gray-700">
-                                        Is Verified
-                                    </label>
-                                    <p className="text-gray-500">Deliver only explicit replies that match a rule.</p>
-                                </div>
-                                <div className="flex items-start h-5">
-                                    <input id="is-reply" name="is-reply" type="checkbox"
-                                        className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                                </div>
-                                <div className="ml-3 text-sm">
-                                    <label htmlFor="is-reply" className="font-medium text-gray-700">
-                                        Is Reply
-                                    </label>
-                                    <p className="text-gray-500">Deliver only Tweets whose authors are verified by Twitter.</p>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <legend className="text-base font-medium text-gray-900">By Tweet Content</legend>
-                            <div className="flex mt-4">
-                                <div className="flex items-start h-5">
-                                    <input id="has-hashtags" name="has-hashtags" type="checkbox"
-                                        className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                                </div>
-                                <div className="ml-3 text-sm">
-                                    <label htmlFor="has-hashtags" className="font-medium text-gray-700">
-                                        Has Hashtags
-                                    </label>
-                                    <p className="text-gray-500">Matches Tweets that contain at least one hashtag.</p>
-                                </div>
-                                <div className="flex items-start h-5">
-                                    <input id="has-images" name="has-images" type="checkbox"
-                                        className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                                </div>
-                                <div className="ml-3 text-sm">
-                                    <label htmlFor="has-images" className="font-medium text-gray-700">
-                                        Has Images
-                                    </label>
-                                    <p className="text-gray-500">Matches Tweets that contain a recognized URL to an image.</p>
-                                </div>
-                                <div className="flex items-start h-5">
-                                    <input id="has-links" name="has-links" type="checkbox"
-                                        className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                                </div>
-                                <div className="ml-3 text-sm">
-                                    <label htmlFor="has-links" className="font-medium text-gray-700">
-                                        has Links
-                                    </label>
-                                    <p className="text-gray-500">matches Tweets which contain links and media in the Tweet body.</p>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <div className="flex">
-                                <div className="flex items-start h-5">
-                                    <input id="has-media" name="has-media" type="checkbox"
-                                        className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                                </div>
-                                <div className="ml-3 text-sm">
-                                    <label htmlFor="has-media" className="font-medium text-gray-700">
-                                        Has Media
-                                    </label>
-                                    <p className="text-gray-500">Matches Tweets that contain a media object, such as a photo, GIF, or video, as determined by Twitter.</p>
-                                </div>
-                                <div className="flex items-start h-5">
-                                    <input id="has-videos" name="has-videos" type="checkbox"
-                                        className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                                </div>
-                                <div className="ml-3 text-sm">
-                                    <label htmlFor="has-videos" className="font-medium text-gray-700">
-                                        Has Videos
-                                    </label>
-                                    <p className="text-gray-500">Matches Tweets that contain native Twitter videos, uploaded directly to Twitter.</p>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                </form>
-            </div>
-        );
     }
 
     private renderTweets(): React.ReactNode {
