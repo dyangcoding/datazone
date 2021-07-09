@@ -3,22 +3,31 @@ import { SearchIcon } from "@heroicons/react/outline";
 import { AccordionItem } from "../components/accordionItem";
 import { RuleSearchForm } from "../rules/rule-search-form";
 import { OptionsSearchForm } from "../rules/options-search-form";
+import { Rule, RuleProperties } from "../rules/rule";
+import { RuleOptions, RuleOptionsProperties } from "../rules/ruleOptions";
 
 interface TweetProps {
 
 }
 
 interface TweetState {
-    readonly toggleSearch: Boolean
+    readonly toggleSearch: Boolean;
+    readonly rule: RuleProperties;
 }
 
 export class Tweets extends React.Component<TweetProps, TweetState> {
     constructor(props: TweetProps) {
         super(props);
 
-        this.state = {toggleSearch: false};
+        this.state = {
+            toggleSearch: false,
+            rule: new Rule(),
+        };
+        this.onSubmit = this.onSubmit.bind(this);
         this.onToggleSearch = this.onToggleSearch.bind(this);
         this.renderSearchSection = this.renderSearchSection.bind(this);
+        this.onRuleChange = this.onRuleChange.bind(this);
+        this.onRuleOptionsChange = this.onRuleOptionsChange.bind(this);
     }
 
     public render(): React.ReactNode {
@@ -79,26 +88,40 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
                 <React.Fragment>
                     <div className="shadow overflow-hidden sm:rounded-md">
                         <div className="px-4 py-5 bg-white sm:p-6">
-                            <AccordionItem title="Standard Suche">
-                                <RuleSearchForm />
-                            </AccordionItem>
-                            <AccordionItem title="Optionale Suche">
-                                <OptionsSearchForm />
-                            </AccordionItem>
-                            <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                                <button type="submit"
-                                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm 
-                                        text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none 
-                                        focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    Send
-                                </button>
-                            </div>
+                            <form onSubmit={this.onSubmit}>
+                                <AccordionItem title="Standard Suche">
+                                    <RuleSearchForm onChange={this.onRuleChange} />
+                                </AccordionItem>
+                                <AccordionItem title="Optionale Suche">
+                                    <OptionsSearchForm onChange={this.onRuleOptionsChange} />
+                                </AccordionItem>
+                                <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                                    <button type="submit"
+                                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm 
+                                            text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none 
+                                            focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        Send
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </React.Fragment>
             );
         }
         return null;
+    }
+
+    private onRuleChange(rule: RuleProperties): void {
+        this.setState(previousState => ({rule: {...previousState.rule, ...rule}}));
+    }
+
+    private onRuleOptionsChange(options: RuleOptionsProperties): void {
+        const newRule: RuleProperties = {...this.state.rule, "options": options}
+        this.setState(previousState => ({rule: {...previousState.rule, ...newRule}}));
+    }
+
+    private onSubmit(event: React.FormEvent<HTMLFormElement>): void {
     }
 
     private renderTweets(): React.ReactNode {
