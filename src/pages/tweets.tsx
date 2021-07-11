@@ -4,7 +4,7 @@ import { AccordionItem } from "../components/accordionItem";
 import { RuleSearchForm } from "../rules/rule-search-form";
 import { OptionsSearchForm } from "../rules/options-search-form";
 import { Rule, RuleProperties } from "../rules/rule";
-import { RuleOptions, RuleOptionsProperties } from "../rules/ruleOptions";
+import { RuleOptionsProperties } from "../rules/ruleOptions";
 import { RuleClient } from "../services/ajax";
 import { TweetsListComponent } from "../components/tweets-list";
 
@@ -28,7 +28,7 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
         this.state = {
             toggleSearch: false,
             rule: new Rule(),
-            options: new RuleOptions(),
+            options: {},
             hideError: true,
             processing: false,
         };
@@ -96,8 +96,7 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
                     A better way to acquire data
                 </p>
                 <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-                    Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in
-                    accusamus quisquam.
+                    Data Zone overcomes the struggle on how to effectively acquire twitter data for your next research project.
                 </p>
             </div>
         );
@@ -134,8 +133,12 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
         return null;
     }
 
+    // TODO: ensure that no empty Rule would be sent
     private buildRule(): RuleProperties {
-        return {...this.state.rule, options: this.state.options};
+        if (Object.keys(this.state.options).length) {
+            return {...this.state.rule, options: this.state.options};
+        }
+        return {...this.state.rule};
     }
 
     private renderErrorMessage(): React.ReactNode {
