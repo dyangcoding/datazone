@@ -56,7 +56,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                                 <label htmlFor="is-verified" className="font-medium text-gray-700">
                                     Is Verified
                                 </label>
-                                <p className="text-gray-500">Deliver only explicit replies that match a rule.</p>
+                                <p className="text-gray-500">Deliver only Tweets whose authors are verified by Twitter.</p>
                             </div>
                             <div className="flex items-start h-5">
                                 <input id="is-reply" name="is-reply" type="checkbox" onChange={this.onIsReplyChange}
@@ -66,7 +66,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                                 <label htmlFor="is-reply" className="font-medium text-gray-700">
                                     Is Reply
                                 </label>
-                                <p className="text-gray-500">Deliver only Tweets whose authors are verified by Twitter.</p>
+                                <p className="text-gray-500">Deliver only explicit replies that match a rule.</p>
                             </div>
                         </div>
                     </fieldset>
