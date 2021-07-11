@@ -1,10 +1,12 @@
 import React from "react";
-import { SearchIcon } from "@heroicons/react/outline";
+import { XIcon, SearchIcon } from "@heroicons/react/outline";
 import { AccordionItem } from "../components/accordionItem";
 import { RuleSearchForm } from "../rules/rule-search-form";
 import { OptionsSearchForm } from "../rules/options-search-form";
 import { Rule, RuleProperties } from "../rules/rule";
 import { RuleOptions, RuleOptionsProperties } from "../rules/ruleOptions";
+import { RuleClient } from "../services/ajax";
+import { TweetsListComponent } from "../components/tweets-list";
 
 interface TweetProps {
 
@@ -13,6 +15,10 @@ interface TweetProps {
 interface TweetState {
     readonly toggleSearch: Boolean;
     readonly rule: RuleProperties;
+    readonly options: RuleOptionsProperties;
+    readonly error?: Error;
+    readonly hideError: boolean;
+    readonly processing: boolean;
 }
 
 export class Tweets extends React.Component<TweetProps, TweetState> {
@@ -22,12 +28,27 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
         this.state = {
             toggleSearch: false,
             rule: new Rule(),
+            options: new RuleOptions(),
+            hideError: true,
+            processing: false,
         };
         this.onSubmit = this.onSubmit.bind(this);
         this.onToggleSearch = this.onToggleSearch.bind(this);
         this.renderSearchSection = this.renderSearchSection.bind(this);
         this.onRuleChange = this.onRuleChange.bind(this);
         this.onRuleOptionsChange = this.onRuleOptionsChange.bind(this);
+        this.onHideErrorClick = this.onHideErrorClick.bind(this);
+    }
+
+    public componentDidUpdate(_: TweetProps, previousState: TweetState): void {
+        if (this.state.processing && !previousState.processing) {
+            const rule = this.buildRule();
+            console.log(rule);
+            RuleClient.createRule(rule).then(
+                () => this.setState({processing: false}),
+                reason => this.setState({error: reason, hideError: false, processing: false})
+            );
+        }
     }
 
     public render(): React.ReactNode {
@@ -87,6 +108,7 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
             return (
                 <React.Fragment>
                     <div className="shadow overflow-hidden sm:rounded-md">
+                        {this.renderErrorMessage()}
                         <div className="px-4 py-5 bg-white sm:p-6">
                             <form onSubmit={this.onSubmit}>
                                 <AccordionItem title="Standard Suche">
@@ -112,20 +134,41 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
         return null;
     }
 
+    private buildRule(): RuleProperties {
+        return {...this.state.rule, options: this.state.options};
+    }
+
+    private renderErrorMessage(): React.ReactNode {
+        const error = this.state.error;
+        if (error && !this.state.hideError) {
+            return (
+                <div className="flex justify-between items-center p-2 bg-red-100 text-red-500 py-3 px-3 rounded" onClick={this.onHideErrorClick}>
+                    <div className="lead">{error.message}</div>
+                    <XIcon className="h-6 w-6" />
+                </div>
+            );
+        }
+    }
+
+    private onHideErrorClick(): void {
+        this.setState(previouSstate => ({hideError: !previouSstate.hideError}));
+    }
+
     private onRuleChange(rule: RuleProperties): void {
         this.setState(previousState => ({rule: {...previousState.rule, ...rule}}));
     }
 
     private onRuleOptionsChange(options: RuleOptionsProperties): void {
-        const newRule: RuleProperties = {...this.state.rule, "options": options}
-        this.setState(previousState => ({rule: {...previousState.rule, ...newRule}}));
+        this.setState(previousState => ({options: {...previousState.options, ...options}}));
     }
 
     private onSubmit(event: React.FormEvent<HTMLFormElement>): void {
+        event.preventDefault();
+        this.setState({processing: true});
     }
 
     private renderTweets(): React.ReactNode {
-        return null;
+        return <TweetsListComponent />;
     }
 
     private onToggleSearch(): void {

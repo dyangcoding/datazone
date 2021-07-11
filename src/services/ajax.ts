@@ -11,10 +11,9 @@ const instance = axios.create({
 });
 
 const responseBody = (response: AxiosResponse) => Promise.resolve(response.data);
-const onError = (error: Error) => Promise.reject(error)
 
 const requests = {
-	get: (url: string) => instance.get(url).then(responseBody).catch(onError),
+	get: (url: string) => instance.get(url).then(responseBody),
 	post: (url: string, body: {}) => instance.post(url, body).then(responseBody),
 	put: (url: string, body: {}) => instance.put(url, body).then(responseBody),
 	delete: (url: string) => instance.delete(url).then(responseBody),
