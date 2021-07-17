@@ -3,10 +3,10 @@ import { XIcon, SearchIcon } from "@heroicons/react/outline";
 import { AccordionItem } from "../components/accordionItem";
 import { RuleSearchForm } from "../rules/rule-search-form";
 import { OptionsSearchForm } from "../rules/options-search-form";
-import { Rule, RuleProperties } from "../rules/rule";
-import { RuleOptionsProperties } from "../rules/ruleOptions";
+import { Rule, RuleProperties } from "../models/rule";
 import { RuleClient } from "../services/ajax";
 import { TweetsListComponent } from "../components/tweets-list";
+import { RuleOptionsProperties } from "../models/ruleOptions";
 
 interface TweetProps {
 

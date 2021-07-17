@@ -1,5 +1,5 @@
 import React from "react";
-import { Rule, RuleProperties } from "./rule";
+import { Rule, RuleProperties } from "../models/rule";
 
 interface SearchFormProps {
     readonly onChange?: (value: RuleProperties) => void;

@@ -1,5 +1,5 @@
 import React from "react";
-import { RuleOptions, RuleOptionsProperties } from "./ruleOptions";
+import { RuleOptions, RuleOptionsProperties } from "../models/ruleOptions";
 
 interface OptionsFormProps {
     readonly onChange?: (value: RuleOptionsProperties) => void;
