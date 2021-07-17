@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { SearchIcon } from "@heroicons/react/outline";
-import { useRules } from "../services/query";
+import { useGetRulesQuery } from "../services/api";
 
 const Header: () => JSX.Element = () => {
     return (
@@ -29,19 +29,17 @@ const Header: () => JSX.Element = () => {
 }
 
 const SearchHistory = () => {
-    const { isLoading, ...queryInfo } = useRules()
+    const { data: rules, isLoading } = useGetRulesQuery()
     return (
         <Fragment>
             <Header />
-            {queryInfo.isSuccess && (
-                <ul>
-                    {queryInfo.data.map(rule => (
+            {!rules ? <div>No Rules </div> : undefined}
+            <ul>
+                {rules?.map(rule => (
                     <li key={rule.id}>{rule.keyword}</li>
-                    ))}
-                </ul>
-            )}
-            {isLoading && 'Loading'}
-            {queryInfo.error?.message}
+                ))}
+            </ul>
+            {isLoading ? 'Loading' : null}
         </Fragment>
     );
 }
