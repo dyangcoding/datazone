@@ -1,5 +1,5 @@
 import React from "react"
-import { XIcon, ChevronDownIcon } from "@heroicons/react/outline";
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/outline";
 
 export interface ItemProps {
     readonly title: string;
@@ -28,7 +28,7 @@ export class AccordionItem extends React.PureComponent<ItemProps, ItemState> {
                 <div className="border rounded border-white p-2 bg-light" onClick={this.onToggleClick}>
                     <div className="flex justify-between items-center p-2">
                         <div className="lead">{this.props.title}</div>
-                        {this.state.isToggled ? <XIcon className="h-6 w-6" /> : <ChevronDownIcon className="h-6 w-6"/>}
+                        {this.state.isToggled ? <ChevronUpIcon className="h-6 w-6" /> : <ChevronDownIcon className="h-6 w-6"/>}
                     </div>
                 </div>
                 {this.state.isToggled && this.props.children}
