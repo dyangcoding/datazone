@@ -5,8 +5,8 @@ import { RuleSearchForm } from "../rules/rule-search-form";
 import { OptionsSearchForm } from "../rules/options-search-form";
 import { Rule, RuleProperties } from "../models/rule";
 import { RuleClient } from "../services/ajax";
-import { TweetsListComponent } from "../components/tweets-list";
 import { RuleOptionsProperties } from "../models/ruleOptions";
+import TweetsList from "../tweets/tweets-list";
 
 interface TweetProps {
 
@@ -171,7 +171,7 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
     }
 
     private renderTweets(): React.ReactNode {
-        return <TweetsListComponent />;
+        return <TweetsList />;
     }
 
     private onToggleSearch(): void {

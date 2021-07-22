@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Rule } from "../rules/rule";
+import { Rule } from "../models/rule";
+import { Tweet } from "../models/tweet";
 
 type RulesResponse = Rule[];
-// type TweetsResponse 
+type TweetsResponse = Tweet[];
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080/" }),
-  tagTypes: ["Rule"],
+  tagTypes: ["Rule", "Tweet"],
   endpoints: (build) => ({
     getRules: build.query<RulesResponse, void>({
       query: () => "rules",
@@ -17,6 +18,17 @@ export const api = createApi({
               { type: "Rule", id: "LIST" },
             ]
           : [{ type: "Rule", id: "LIST" }],
+    }),
+
+    getTweets: build.query<TweetsResponse, void>({
+        query: () => "tweets",
+        providesTags: (result) =>
+          result
+          ? [
+              ...result.map(({ id }) => ({ type: "Tweet" as const, id})),
+              { type: "Tweet", id: "LIST"},
+          ]
+          : [{type: "Tweet", id: "LIST"}],
     }),
     
     addRule: build.mutation<Rule, Partial<Rule>>({
@@ -57,6 +69,7 @@ export const api = createApi({
 export const {
   useGetRuleQuery,
   useGetRulesQuery,
+  useGetTweetsQuery,
   useAddRuleMutation,
   useUpdateRuleMutation,
   useDeleteRuleMutation,
