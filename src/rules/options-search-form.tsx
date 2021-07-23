@@ -2,6 +2,7 @@ import React from "react";
 import { RuleOptions, RuleOptionsProperties } from "../models/ruleOptions";
 
 interface OptionsFormProps {
+    readonly options?: RuleOptionsProperties;
     readonly onChange?: (value: RuleOptionsProperties) => void;
 }
 
@@ -14,7 +15,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
         super(props);
 
         this.state = {
-            options: new RuleOptions()
+            options: props.options || new RuleOptions()
         };
 
         this.onIsRetweetChange = this.onIsRetweetChange.bind(this);
@@ -32,6 +33,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
     }
 
     public render(): React.ReactNode {
+        const options = this.state.options;
         return (
             <div className="mt-5 md:mt-0 md:col-span-2">
                 <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
@@ -39,7 +41,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                         <legend className="text-base font-medium text-gray-900">By Tweet Type</legend>
                         <div className="flex mt-4">
                             <div className="flex items-start h-5">
-                                <input id="is-retweet" name="is-retweet" type="checkbox" onChange={this.onIsRetweetChange}
+                                <input checked={options.isRetweet} id="is-retweet" name="is-retweet" type="checkbox" onChange={this.onIsRetweetChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
                             <div className="ml-3 text-sm">
@@ -49,7 +51,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                                 <p className="text-gray-500">Matches on Retweets that match the rest of the specified rule.</p>
                             </div>
                             <div className="flex items-start h-5">
-                                <input id="is-verified" name="is-verified" type="checkbox" onChange={this.onIsVerifiedChange}
+                                <input checked={options.isVerified} id="is-verified" name="is-verified" type="checkbox" onChange={this.onIsVerifiedChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
                             <div className="ml-3 text-sm">
@@ -59,7 +61,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                                 <p className="text-gray-500">Deliver only Tweets whose authors are verified by Twitter.</p>
                             </div>
                             <div className="flex items-start h-5">
-                                <input id="is-reply" name="is-reply" type="checkbox" onChange={this.onIsReplyChange}
+                                <input checked={options.isReply} id="is-reply" name="is-reply" type="checkbox" onChange={this.onIsReplyChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
                             <div className="ml-3 text-sm">
@@ -74,7 +76,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                         <legend className="text-base font-medium text-gray-900">By Tweet Content</legend>
                         <div className="flex mt-4">
                             <div className="flex items-start h-5">
-                                <input id="has-hashtags" name="has-hashtags" type="checkbox" onChange={this.onHasHashtagsChange}
+                                <input checked={options.hasHashtags} id="has-hashtags" name="has-hashtags" type="checkbox" onChange={this.onHasHashtagsChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
                             <div className="ml-3 text-sm">
@@ -84,7 +86,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                                 <p className="text-gray-500">Matches Tweets that contain at least one hashtag.</p>
                             </div>
                             <div className="flex items-start h-5">
-                                <input id="has-images" name="has-images" type="checkbox" onChange={this.onHasImagesChange}
+                                <input checked={options.hasImages} id="has-images" name="has-images" type="checkbox" onChange={this.onHasImagesChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
                             <div className="ml-3 text-sm">
@@ -94,7 +96,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                                 <p className="text-gray-500">Matches Tweets that contain a recognized URL to an image.</p>
                             </div>
                             <div className="flex items-start h-5">
-                                <input id="has-links" name="has-links" type="checkbox" onChange={this.onHasLinksChange}
+                                <input checked={options.hasLinks} id="has-links" name="has-links" type="checkbox" onChange={this.onHasLinksChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
                             <div className="ml-3 text-sm">
@@ -108,7 +110,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                     <fieldset>
                         <div className="flex">
                             <div className="flex items-start h-5">
-                                <input id="has-media" name="has-media" type="checkbox" onChange={this.onHasMediaChange}
+                                <input checked={options.hasMedia} id="has-media" name="has-media" type="checkbox" onChange={this.onHasMediaChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
                             <div className="ml-3 text-sm">
@@ -118,7 +120,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                                 <p className="text-gray-500">Matches Tweets that contain a media object, such as a photo, GIF, or video, as determined by Twitter.</p>
                             </div>
                             <div className="flex items-start h-5">
-                                <input id="has-videos" name="has-videos" type="checkbox" onChange={this.onHasVideosChange}
+                                <input checked={options.hasVideos} id="has-videos" name="has-videos" type="checkbox" onChange={this.onHasVideosChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
                             <div className="ml-3 text-sm">

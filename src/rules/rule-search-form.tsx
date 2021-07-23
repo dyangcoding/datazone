@@ -1,7 +1,9 @@
+import { runInContext } from "node:vm";
 import React from "react";
 import { Rule, RuleProperties } from "../models/rule";
 
 interface SearchFormProps {
+    readonly rule?: RuleProperties;
     readonly onChange?: (value: RuleProperties) => void;
 }
 
@@ -14,7 +16,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
         super(props);
 
         this.state = {
-            rule: new Rule(),
+            rule: props.rule || new Rule(),
         };
 
         this.onKeywordChange = this.onKeywordChange.bind(this);
@@ -31,6 +33,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
     }
 
     public render(): React.ReactNode {
+        const rule = this.state.rule;
         return (
             <div className="mt-5 md:mt-0 md:col-span-2">
                 <div className="px-4 py-5 bg-white sm:p-6">
@@ -40,7 +43,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 Keyword
                                 <span className="text-gray-400">Max. 256 Characters</span>
                             </label>
-                            <input type="text" name="keyword" id="keyword" autoComplete="keyword" onChange={this.onKeywordChange}
+                            <input value={rule.keyword} type="text" name="keyword" id="keyword" autoComplete="keyword" onChange={this.onKeywordChange}
                                 placeholder="a keyword within the body of a Tweet"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -49,7 +52,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                             <label htmlFor="hashtags" className="block text-sm font-medium text-gray-700">
                                 Hashtags
                             </label>
-                            <input type="text" name="hashtags" id="hashtags" autoComplete="given-name" onChange={this.onHashtagsChange}
+                            <input value={rule.hashtags} type="text" name="hashtags" id="hashtags" autoComplete="given-name" onChange={this.onHashtagsChange}
                                 placeholder="a recognized hashtag in a Tweet"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -58,7 +61,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                             <label htmlFor="emoji" className="block text-sm font-medium text-gray-700">
                                 Emoji
                             </label>
-                            <input type="text" name="emoji" id="emoji" autoComplete="family-name" onChange={this.onEmojiChange}
+                            <input value={rule.emoji} type="text" name="emoji" id="emoji" autoComplete="family-name" onChange={this.onEmojiChange}
                                 placeholder="an emoji within the body of a Tweet"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -67,7 +70,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                             <label htmlFor="user" className="block text-sm font-medium text-gray-700">
                                 User
                             </label>
-                            <input type="text" name="user" id="user" autoComplete="user" onChange={this.onUserChange}
+                            <input value={rule.mentionedUserId} type="text" name="user" id="user" autoComplete="user" onChange={this.onUserChange}
                                 placeholder="Matches any Tweet that mentions the given username"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -76,7 +79,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                             <label htmlFor="from-user" className="block text-sm font-medium text-gray-700">
                                 From User
                             </label>
-                            <input type="text" name="from-user" id="from-user" autoComplete="from-user" onChange={this.onFromUserChange}
+                            <input value={rule.fromUser} type="text" name="from-user" id="from-user" autoComplete="from-user" onChange={this.onFromUserChange}
                                 placeholder="Matches any Tweet from a specific user"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -85,7 +88,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                             <label htmlFor="to-user" className="block text-sm font-medium text-gray-700">
                                 To User
                             </label>
-                            <input type="text" name="to-user" id="to-user" autoComplete="to-user" onChange={this.onToUserChange}
+                            <input value={rule.toUser} type="text" name="to-user" id="to-user" autoComplete="to-user" onChange={this.onToUserChange}
                                 placeholder="Matches any Tweet that is in reply to a particular user"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -94,7 +97,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                             <label htmlFor="retweet-of-user" className="block text-sm font-medium text-gray-700">
                                 Retweet of User
                             </label>
-                            <input type="text" name="retweet-of-user" id="retweet-of-user" autoComplete="retweet-of-user" onChange={this.onRetweetOfUserChange}
+                            <input value={rule.retweetsOfUser} type="text" name="retweet-of-user" id="retweet-of-user" autoComplete="retweet-of-user" onChange={this.onRetweetOfUserChange}
                                 placeholder="Matches Tweets that are Retweets of the specified user"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -107,7 +110,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                                     https://
                                 </span>
-                                <input type="text" name="url" id="url" onChange={this.onUrlChange}
+                                <input value={rule.url} type="text" name="url" id="url" onChange={this.onUrlChange}
                                     placeholder="Performs a tokenized match on any validly-formatted URL of a Tweet"
                                     className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"/>
                             </div>
@@ -117,7 +120,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                             <label htmlFor="conversation" className="block text-sm font-medium text-gray-700">
                                 Conversation ID
                             </label>
-                            <input type="text" name="conversation" id="conversation" onChange={this.onConversationIdChange}
+                            <input value={rule.conversationId} type="text" name="conversation" id="conversation" onChange={this.onConversationIdChange}
                                 placeholder="Matches Tweets that share a common conversation ID"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -126,7 +129,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                             <label htmlFor="context" className="block text-sm font-medium text-gray-700">
                                 Context
                             </label>
-                            <input type="text" name="context" id="context" onChange={this.onContextChange}
+                            <input value={rule.context} type="text" name="context" id="context" onChange={this.onContextChange}
                                 placeholder="Matches Tweets with a specific domain id and/or domain id, enitity id pair where * represents a wildcard"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -135,7 +138,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                             <label htmlFor="entity" className="block text-sm font-medium text-gray-700">
                                 Entity
                             </label>
-                            <input type="text" name="entity" id="entity" onChange={this.onEntityChange}
+                            <input value={rule.entity} type="text" name="entity" id="entity" onChange={this.onEntityChange}
                                 placeholder="Matches Tweets with a specific entity string value"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
