@@ -1,11 +1,10 @@
 import { RuleOptionsProperties } from "./ruleOptions";
 
 export interface RuleProperties {
-    // this id would be generated from Twitter API which is utilised for deleting Rules
-    readonly id?: number;
-    // will be generated once it is verified by the Twitter API and could be utilised to deduplicate objects within DB
-    readonly twitterGenId?: number;
     // A _id would also be generated from MongoDB which is a object containing a timestamp
+    readonly id?: number;
+    // this id would be generated from Twitter API which is utilised for deleting Rules
+    readonly twitterGenId?: number;
     // TODO: unmarshal the object to get this timestamp
     readonly createdAt?: Date;
     readonly keyword?: string;
