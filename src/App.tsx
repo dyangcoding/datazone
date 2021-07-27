@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
 import { About } from "./pages/about";
 import { Help } from "./pages/help";
 import { Tweets } from "./pages/tweets";
-import SearchHistory from "./pages/search-history";
+import Rules from "./pages/rules";
 
 const NavHeader: () => JSX.Element = () => (
   <div className="bg-gray-800 text-gray-100 flex justify-between md:hidden">
@@ -33,9 +33,9 @@ const Sidebar: () => JSX.Element = () => (
             <HomeIcon className="h-6 w-6" aria-hidden="true" />
             <span>Tweets</span>
         </Link>
-        <Link to="/history" className="flex items-center space-x-2 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
+        <Link to="/rules" className="flex items-center space-x-2 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
             <ClipboardListIcon className="h-6 w-6" aria-hidden="true" />
-            <span>History</span>
+            <span>Rules</span>
         </Link>
         <Link to="/about" className="flex items-center space-x-2 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
             <InformationCircleIcon className="h-6 w-6" aria-hidden="true" />
@@ -53,7 +53,7 @@ const Content: () => JSX.Element = () => (
   <div className="container mx-auto px-4 max-w-screen-xl flex-1 p-10 text-2xl font-bold">
       <Switch>
           <Route exact path="/" component={Tweets} />
-          <Route exact path="/history" component={SearchHistory} />
+          <Route exact path="/rules" component={Rules} />
           <Route exact path="/about" component={About} />
           <Route exact path="/help" component={Help} />
       </Switch>
