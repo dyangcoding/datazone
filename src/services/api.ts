@@ -7,17 +7,17 @@ type TweetsResponse = Tweet[];
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080/" }),
-  tagTypes: ["Rule", "Tweet"],
+  tagTypes: ["Rules", "Tweets"],
   endpoints: (build) => ({
     getRules: build.query<RulesResponse, void>({
       query: () => "rules",
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: "Rule" as const, id })),
-              { type: "Rule", id: "LIST" },
+              ...result.map(({ id }) => ({ type: "Rules" as const, id })),
+              { type: "Rules", id: "LIST" },
             ]
-          : [{ type: "Rule", id: "LIST" }],
+          : [{ type: "Rules", id: "LIST" }],
     }),
 
     getTweets: build.query<TweetsResponse, void>({
@@ -25,10 +25,10 @@ export const api = createApi({
         providesTags: (result) =>
           result
           ? [
-              ...result.map(({ id }) => ({ type: "Tweet" as const, id})),
-              { type: "Tweet", id: "LIST"},
+              ...result.map(({ id }) => ({ type: "Tweets" as const, id})),
+              { type: "Tweets", id: "LIST"},
           ]
-          : [{type: "Tweet", id: "LIST"}],
+          : [{type: "Tweets", id: "LIST"}],
     }),
     
     addRule: build.mutation<Rule, Partial<Rule>>({
@@ -37,12 +37,12 @@ export const api = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: [{ type: "Rule", id: "LIST" }],
+      invalidatesTags: [{ type: "Rules", id: "LIST" }],
     }),
     
     getRule: build.query<Rule, string>({
       query: (id) => `rules/${id}`,
-      providesTags: (result, error, id) => [{ type: "Rule", id }],
+      providesTags: (result, error, id) => [{ type: "Rules", id }],
     }),
 
     updateRule: build.mutation<void, Pick<Rule, "id"> & Partial<Rule>>({
@@ -51,7 +51,7 @@ export const api = createApi({
         method: "PUT",
         body: patch,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Rule", id }],
+      invalidatesTags: (result, error, { id }) => [{ type: "Rules", id }],
     }),
     
     deleteRule: build.mutation<{ success: boolean; id: number }, number>({
@@ -61,7 +61,7 @@ export const api = createApi({
           method: "DELETE",
         }
       },
-      invalidatesTags: (result, error, id) => [{ type: "Rule", id }],
+      invalidatesTags: (result, error, id) => [{ type: "Rules", id }],
     }),
   }),
 })
