@@ -1,8 +1,8 @@
 import "./index.css";
 import { HomeIcon, InformationCircleIcon, QuestionMarkCircleIcon, ClipboardListIcon } from "@heroicons/react/outline";
 import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
-import { About } from "./pages/about";
-import { Help } from "./pages/help";
+import About from "./pages/about";
+import Help from "./pages/help";
 import { Tweets } from "./pages/tweets";
 import Rules from "./pages/rules";
 
