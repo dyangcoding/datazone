@@ -2,6 +2,7 @@ import React from "react";
 import { Rule, RuleProperties } from "../models/rule";
 import Tooltip from "../components/tooltipWrapper";
 import * as DESC from "../utils/stringUtils"
+import EmojiPicker from "../components/emojiWrapper";
 
 interface SearchFormProps {
     readonly rule?: RuleProperties;
@@ -89,9 +90,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 </label>
                                 <Tooltip id="emoji" title="emoji" description={DESC.EmojiDesc} />
                             </div>
-                            <input value={rule.emoji} type="text" name="emoji" id="emoji" autoComplete="family-name" onChange={this.onEmojiChange}
-                                placeholder="matching an emoji within the body of a Tweet"
-                                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
+                            <EmojiPicker id="emoji" name="emoji" onChange={this.onEmojiChange} />
                         </div>
 
                         <div className="col-span-1">
@@ -213,6 +212,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
     }
 
     private onEmojiChange(event: React.ChangeEvent<HTMLInputElement>): void {
+        console.log(event.target.value)
         this.handleChange({emoji: event.target.value});
     }
 
