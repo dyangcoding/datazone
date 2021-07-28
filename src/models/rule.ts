@@ -8,6 +8,7 @@ export interface RuleProperties {
     // TODO: unmarshal the object to get this timestamp
     readonly createdAt?: Date;
     readonly keyword?: string;
+    readonly tag?: string;
     readonly emoji?: string;
     readonly mentionedUserId?: string;
     readonly phrase?: string;
@@ -27,6 +28,7 @@ export class Rule implements RuleProperties {
     public readonly twitterGenId?: number;
     public readonly createdAt?: Date;
     public readonly keyword?: string;
+    public readonly tag?: string;
     public readonly emoji?: string;
     public readonly mentionedUserId?: string;
     public readonly phrase?: string;
@@ -46,6 +48,7 @@ export class Rule implements RuleProperties {
             twitterGenId: this.twitterGenId,
             createdAt: this.createdAt,
             keyword: this.keyword,
+            tag: this.tag,
             emoji: this.emoji,
             mentionedUserId: this.mentionedUserId,
             phrase: this.phrase,

@@ -1,6 +1,9 @@
-import { runInContext } from "node:vm";
 import React from "react";
 import { Rule, RuleProperties } from "../models/rule";
+import { ChatAltIcon, InformationCircleIcon } from "@heroicons/react/solid";
+import Tooltip from "../components/tooltipWrapper";
+import ReactTooltip from "react-tooltip";
+import * as DESC from "../utils/stringUtils"
 
 interface SearchFormProps {
     readonly rule?: RuleProperties;
@@ -39,107 +42,158 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                 <div className="px-4 py-5 bg-white sm:p-6">
                     <div className="grid grid-cols-4 gap-6">
                         <div className="col-span-4">
-                            <label htmlFor="keyword" className="flex items-center justify-between text-sm font-medium text-gray-700">
-                                Keyword
-                                <span className="text-gray-400">Max. 256 Characters</span>
-                            </label>
+                            <div className="flex justify-between">
+                                <label htmlFor="keyword" className="flex items-center justify-between text-sm font-medium text-gray-700">
+                                    Keyword
+                                </label>
+                                <div className="flex items-center space-x-2">
+                                    <span className="text-sm text-gray-400">Max. 256 Characters</span>
+                                    <Tooltip id="keyword" title="keywords" description={DESC.KeywordDesc} />
+                                </div>
+                            </div>
                             <input value={rule.keyword} type="text" name="keyword" id="keyword" autoComplete="keyword" onChange={this.onKeywordChange}
-                                placeholder="a keyword within the body of a Tweet"
+                                placeholder="matching a keyword within the body of a Tweet"
+                                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
+                        </div>
+
+                        <div className="col-span-4">
+                            <div className="flex justify-between">
+                                <label htmlFor="tag" className="flex items-center justify-between text-sm font-medium text-gray-700">
+                                    Tag
+                                </label>
+                                <div className="flex items-center space-x-2">
+                                    <span className="text-sm text-gray-400">Max. 256 Characters</span>
+                                    <Tooltip id="tag" title="tag" description={DESC.TagDesc} />
+                                </div>
+                            </div>
+                            <input value={rule.tag} type="text" name="tag" id="tag" autoComplete="keyword" onChange={this.onTagChange}
+                                placeholder="unique meta data to identify this rule"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
                         <div className="col-span-2">
-                            <label htmlFor="hashtags" className="block text-sm font-medium text-gray-700">
-                                Hashtags
-                            </label>
+                            <div className="flex justify-between">
+                                <label htmlFor="hashtags" className="block text-sm font-medium text-gray-700">
+                                    Hashtags
+                                </label>
+                                <Tooltip id="hashtags" title="hashtags" description={DESC.HashtagsDesc} />
+                            </div>
+                            
                             <input value={rule.hashtags} type="text" name="hashtags" id="hashtags" autoComplete="given-name" onChange={this.onHashtagsChange}
-                                placeholder="a recognized hashtag in a Tweet"
+                                placeholder="matching a recognized hashtag in a Tweet"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
                         <div className="col-span-2">
-                            <label htmlFor="emoji" className="block text-sm font-medium text-gray-700">
-                                Emoji
-                            </label>
+                            <div className="flex justify-between">
+                                <label htmlFor="emoji" className="block text-sm font-medium text-gray-700">
+                                    Emoji
+                                </label>
+                                <Tooltip id="emoji" title="emoji" description={DESC.EmojiDesc} />
+                            </div>
                             <input value={rule.emoji} type="text" name="emoji" id="emoji" autoComplete="family-name" onChange={this.onEmojiChange}
-                                placeholder="an emoji within the body of a Tweet"
+                                placeholder="matching an emoji within the body of a Tweet"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
                         <div className="col-span-1">
-                            <label htmlFor="user" className="block text-sm font-medium text-gray-700">
-                                User
-                            </label>
+                            <div className="flex justify-between">
+                                <label htmlFor="user" className="block text-sm font-medium text-gray-700">
+                                    User
+                                </label>
+                                <Tooltip id="user" title="user" description={DESC.UserDesc} />
+                            </div>
                             <input value={rule.mentionedUserId} type="text" name="user" id="user" autoComplete="user" onChange={this.onUserChange}
-                                placeholder="Matches any Tweet that mentions the given username"
+                                placeholder="Matching any Tweet that mentions the given username"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
                         <div className="col-span-1">
-                            <label htmlFor="from-user" className="block text-sm font-medium text-gray-700">
-                                From User
-                            </label>
+                            <div className="flex justify-between">
+                                <label htmlFor="from-user" className="block text-sm font-medium text-gray-700">
+                                    From User
+                                </label>
+                                <Tooltip id="from-user" title="from a specific user" description={DESC.FromUserDesc} />
+                            </div>
                             <input value={rule.fromUser} type="text" name="from-user" id="from-user" autoComplete="from-user" onChange={this.onFromUserChange}
-                                placeholder="Matches any Tweet from a specific user"
+                                placeholder="Matching any Tweet from a specific user"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
                         <div className="col-span-1">
-                            <label htmlFor="to-user" className="block text-sm font-medium text-gray-700">
-                                To User
-                            </label>
+                            <div className="flex justify-between">
+                                <label htmlFor="to-user" className="block text-sm font-medium text-gray-700">
+                                    To User
+                                </label>
+                                <Tooltip id="to-user" title="in reply to a particular user" description={DESC.ToUserDesc} />
+                            </div>
                             <input value={rule.toUser} type="text" name="to-user" id="to-user" autoComplete="to-user" onChange={this.onToUserChange}
-                                placeholder="Matches any Tweet that is in reply to a particular user"
+                                placeholder="Matching any Tweet that is in reply to a particular user"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
                         <div className="col-span-1">
-                            <label htmlFor="retweet-of-user" className="block text-sm font-medium text-gray-700">
-                                Retweet of User
-                            </label>
+                            <div className="flex justify-between">
+                                <label htmlFor="retweet-of-user" className="block text-sm font-medium text-gray-700">
+                                    Retweet of User
+                                </label>
+                                <Tooltip id="retweet-of-user" title="Retweets of the specified user" description={DESC.RetweetsOfUserDesc} />
+                            </div>
                             <input value={rule.retweetsOfUser} type="text" name="retweet-of-user" id="retweet-of-user" autoComplete="retweet-of-user" onChange={this.onRetweetOfUserChange}
-                                placeholder="Matches Tweets that are Retweets of the specified user"
+                                placeholder="Matching Tweets that are Retweets of the specified user"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
                         <div className="col-span-2">
-                            <label htmlFor="url" className="block text-sm font-medium text-gray-700">
-                                Url
-                            </label>
+                            <div className="flex justify-between">
+                                <label htmlFor="url" className="block text-sm font-medium text-gray-700">
+                                    Url
+                                </label>
+                                <Tooltip id="url" title="URL" description={DESC.UrlDesc} />
+                            </div>
                             <div className="mt-1 flex rounded-md shadow-sm">
                                 <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                                     https://
                                 </span>
                                 <input value={rule.url} type="text" name="url" id="url" onChange={this.onUrlChange}
-                                    placeholder="Performs a tokenized match on any validly-formatted URL of a Tweet"
+                                    placeholder="matching any validly-formatted URL"
                                     className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"/>
                             </div>
                         </div>
 
                         <div className="col-span-2">
-                            <label htmlFor="conversation" className="block text-sm font-medium text-gray-700">
-                                Conversation ID
-                            </label>
+                            <div className="flex justify-between">
+                                <label htmlFor="conversation" className="block text-sm font-medium text-gray-700">
+                                    Conversation ID
+                                </label>
+                                <Tooltip id="conversation-id" title="conversation ID" description={DESC.ConversationIdDesc} />
+                            </div>
                             <input value={rule.conversationId} type="text" name="conversation" id="conversation" onChange={this.onConversationIdChange}
-                                placeholder="Matches Tweets that share a common conversation ID"
+                                placeholder="Matching Tweets that share a common conversation ID"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
                         <div className="col-span-2">
-                            <label htmlFor="context" className="block text-sm font-medium text-gray-700">
-                                Context
-                            </label>
+                            <div className="flex justify-between">
+                                <label htmlFor="context" className="block text-sm font-medium text-gray-700">
+                                    Context
+                                </label>
+                                <Tooltip id="context" title="context" description={DESC.ContextDesc} />
+                            </div>
                             <input value={rule.context} type="text" name="context" id="context" onChange={this.onContextChange}
-                                placeholder="Matches Tweets with a specific domain id and/or domain id, enitity id pair where * represents a wildcard"
+                                placeholder="Matching Tweets with a specific domain id and/or domain id"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
                         <div className="col-span-2">
-                            <label htmlFor="entity" className="block text-sm font-medium text-gray-700">
-                                Entity
-                            </label>
+                            <div className="flex justify-between">
+                                <label htmlFor="entity" className="block text-sm font-medium text-gray-700">
+                                    Entity
+                                </label>
+                                <Tooltip id="entity" title="entity" description={DESC.EntityDesc} />
+                            </div>
                             <input value={rule.entity} type="text" name="entity" id="entity" onChange={this.onEntityChange}
-                                placeholder="Matches Tweets with a specific entity string value"
+                                placeholder="Matching Tweets with a specific entity"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
                     </div>
@@ -150,6 +204,10 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
 
     private onKeywordChange(event: React.ChangeEvent<HTMLInputElement>): void {
         this.handleChange({keyword: event.target.value});
+    }
+
+    private onTagChange(event: React.ChangeEvent<HTMLInputElement>): void {
+        this.handleChange({tag: event.target.value});
     }
 
     private onHashtagsChange(event: React.ChangeEvent<HTMLInputElement>): void {
