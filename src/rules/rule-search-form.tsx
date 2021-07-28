@@ -1,8 +1,6 @@
 import React from "react";
 import { Rule, RuleProperties } from "../models/rule";
-import { ChatAltIcon, InformationCircleIcon } from "@heroicons/react/solid";
 import Tooltip from "../components/tooltipWrapper";
-import ReactTooltip from "react-tooltip";
 import * as DESC from "../utils/stringUtils"
 
 interface SearchFormProps {
@@ -66,8 +64,8 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                     <Tooltip id="tag" title="tag" description={DESC.TagDesc} />
                                 </div>
                             </div>
-                            <input value={rule.tag} type="text" name="tag" id="tag" autoComplete="keyword" onChange={this.onTagChange}
-                                placeholder="unique meta data to identify this rule"
+                            <input value={rule.tag} type="text" name="tag" id="tag" autoComplete="tag" onChange={this.onTagChange}
+                                placeholder="a simple string to identify the rule"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 

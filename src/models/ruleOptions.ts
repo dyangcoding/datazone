@@ -7,7 +7,7 @@ export interface RuleOptionsProperties {
     readonly hasMedia?: boolean;
     readonly hasImages?: boolean;
     readonly hasVideos?: boolean;
-    readonly lang?: string;
+    readonly language?: string;
     readonly sample?: number;
 }
 
@@ -20,7 +20,7 @@ export class RuleOptions implements RuleOptionsProperties {
     public readonly hasMedia?: boolean;
     public readonly hasImages?: boolean;
     public readonly hasVideos?: boolean;
-    public readonly lang?: string;
+    public readonly language?: string;
     public readonly sample?: number;
 
     public toProps(): RuleOptionsProperties {
@@ -33,7 +33,7 @@ export class RuleOptions implements RuleOptionsProperties {
             hasMedia: this.hasMedia,
             hasImages: this.hasImages,
             hasVideos: this.hasVideos,
-            lang: this.lang,
+            language: this.language,
             sample: this.sample
         };
     }

@@ -170,7 +170,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
 
     // add dropdown for language selection
     private onLangChange(event: React.ChangeEvent<HTMLInputElement>): void {
-        this.handleChange({lang: event.target.value});
+        this.handleChange({language: event.target.value});
     }
 
     // TODO validate input 
