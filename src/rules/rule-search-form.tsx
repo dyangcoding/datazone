@@ -22,6 +22,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
         };
 
         this.onKeywordChange = this.onKeywordChange.bind(this);
+        this.onTagChange = this.onTagChange.bind(this);
         this.onHashtagsChange = this.onHashtagsChange.bind(this);
         this.onEmojiChange = this.onEmojiChange.bind(this);
         this.onUserChange = this.onUserChange.bind(this);
@@ -61,7 +62,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                     Tag
                                 </label>
                                 <div className="flex items-center space-x-2">
-                                    <span className="text-sm text-gray-400">Max. 256 Characters</span>
+                                    <span className="text-sm text-gray-400">Max. 128 Characters</span>
                                     <Tooltip id="tag" title="tag" description={DESC.TagDesc} />
                                 </div>
                             </div>

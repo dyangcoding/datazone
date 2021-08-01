@@ -102,7 +102,7 @@ const RuleInfo: () => JSX.Element = () => {
 
 const ErrorInfo = ({ error } : {error: FetchBaseQueryError | SerializedError }) => {
     return (
-        <div className="lg:text-center py-6 border rounded-lg">
+        <div className="lg:text-center py-6 border-2 border-gray-300 border-dashed rounded-lg">
             <div className="flex items-center justify-center px-2 py-4 text-center"><EmojiSadIcon className="text-red-500 h-12 w-12" aria-hidden="true" /></div>
             <h2 className="text-2xl text-red-600 font-semibold tracking-wide uppercase">Oops, I think you're lost.</h2>
             <p className="text-lg text-red-500">
@@ -129,10 +129,7 @@ const RenderEditAction = ( {rule} : {rule : RuleProperties}) => {
 }
 
 const Rules = () => {
-    const { data: rules, error, isLoading } = useGetRulesQuery(undefined, {
-        pollingInterval: 5000, 
-        refetchOnMountOrArgChange: true,
-    })
+    const { data: rules, error, isLoading } = useGetRulesQuery()
     const [isEditing, setIsEditing] = useState(false)
     const [deleteRule, { isLoading: isDeleting }] = useDeleteRuleMutation()
     return (

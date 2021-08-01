@@ -1,5 +1,8 @@
 import React from "react";
+import Dropdown from "../components/dropdown";
+import Tooltip from "../components/tooltipWrapper";
 import { RuleOptions, RuleOptionsProperties } from "../models/ruleOptions";
+import * as DESC from "../utils/stringUtils"
 
 interface OptionsFormProps {
     readonly options?: RuleOptionsProperties;
@@ -39,12 +42,12 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                 <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
                     <fieldset>
                         <legend className="text-base font-medium text-gray-900">By Tweet Type</legend>
-                        <div className="flex mt-4">
+                        <div className="flex mt-4 text-sm">
                             <div className="flex items-start h-5">
                                 <input checked={options.isRetweet} id="is-retweet" name="is-retweet" type="checkbox" onChange={this.onIsRetweetChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
-                            <div className="ml-3 text-sm">
+                            <div className="ml-3">
                                 <label htmlFor="is-retweet" className="font-medium text-gray-700">
                                     Is Retweet
                                 </label>
@@ -54,7 +57,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                                 <input checked={options.isVerified} id="is-verified" name="is-verified" type="checkbox" onChange={this.onIsVerifiedChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
-                            <div className="ml-3 text-sm">
+                            <div className="ml-3">
                                 <label htmlFor="is-verified" className="font-medium text-gray-700">
                                     Is Verified
                                 </label>
@@ -64,7 +67,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                                 <input checked={options.isReply} id="is-reply" name="is-reply" type="checkbox" onChange={this.onIsReplyChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
-                            <div className="ml-3 text-sm">
+                            <div className="ml-3">
                                 <label htmlFor="is-reply" className="font-medium text-gray-700">
                                     Is Reply
                                 </label>
@@ -74,12 +77,12 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                     </fieldset>
                     <fieldset>
                         <legend className="text-base font-medium text-gray-900">By Tweet Content</legend>
-                        <div className="flex mt-4">
+                        <div className="flex mt-4 text-sm">
                             <div className="flex items-start h-5">
                                 <input checked={options.hasHashtags} id="has-hashtags" name="has-hashtags" type="checkbox" onChange={this.onHasHashtagsChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
-                            <div className="ml-3 text-sm">
+                            <div className="ml-3">
                                 <label htmlFor="has-hashtags" className="font-medium text-gray-700">
                                     Has Hashtags
                                 </label>
@@ -89,7 +92,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                                 <input checked={options.hasImages} id="has-images" name="has-images" type="checkbox" onChange={this.onHasImagesChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
-                            <div className="ml-3 text-sm">
+                            <div className="ml-3">
                                 <label htmlFor="has-images" className="font-medium text-gray-700">
                                     Has Images
                                 </label>
@@ -99,7 +102,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                                 <input checked={options.hasLinks} id="has-links" name="has-links" type="checkbox" onChange={this.onHasLinksChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
-                            <div className="ml-3 text-sm">
+                            <div className="ml-3">
                                 <label htmlFor="has-links" className="font-medium text-gray-700">
                                     has Links
                                 </label>
@@ -108,12 +111,12 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                         </div>
                     </fieldset>
                     <fieldset>
-                        <div className="flex">
+                        <div className="flex space-x-4">
                             <div className="flex items-start h-5">
                                 <input checked={options.hasMedia} id="has-media" name="has-media" type="checkbox" onChange={this.onHasMediaChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
-                            <div className="ml-3 text-sm">
+                            <div className="text-sm">
                                 <label htmlFor="has-media" className="font-medium text-gray-700">
                                     Has Media
                                 </label>
@@ -123,11 +126,24 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                                 <input checked={options.hasVideos} id="has-videos" name="has-videos" type="checkbox" onChange={this.onHasVideosChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
                             </div>
-                            <div className="ml-3 text-sm">
+                            <div className="text-sm">
                                 <label htmlFor="has-videos" className="font-medium text-gray-700">
                                     Has Videos
                                 </label>
                                 <p className="text-gray-500">Matches Tweets that contain native Twitter videos, uploaded directly to Twitter.</p>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend className="text-base font-medium text-gray-900">By Tweet Content</legend>
+                        <div className="flex mt-4">
+                            <div className="flex flex-auto justify-between">
+                                <Dropdown id="language" name="language" items={["English", "German", "Chinese"]} onChange={this.onLangChange} defaultValue="English" />
+                                <Tooltip id="language" title="Language" description={DESC.LanguageDesc} />
+                            </div>
+                            <div className="flex flex-auto justify-between">
+                                <Dropdown id="sample" name="sample" items={["10", "20", "30", "40", "50", "60", "70", "80", "90", "100"]} onChange={this.onSampleChange} defaultValue="30" />
+                                <Tooltip id="sample" title="sample" description={DESC.SampleDesc} />
                             </div>
                         </div>
                     </fieldset>
@@ -168,13 +184,12 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
         this.handleChange({hasVideos: event.target.checked ? event.target.checked : undefined});
     }
 
-    // add dropdown for language selection
-    private onLangChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    private onLangChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+        console.log(event.target.value)
         this.handleChange({language: event.target.value});
     }
 
-    // TODO validate input 
-    private onSampleChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    private onSampleChange(event: React.ChangeEvent<HTMLSelectElement>): void {
         this.handleChange({sample: Number.parseInt(event.target.value, 10)})
     }
 
