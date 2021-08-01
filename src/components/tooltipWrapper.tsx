@@ -25,7 +25,7 @@ const Content = ({ title, description } : { title: string, description: string }
 const Tooltip = ({ id, type, place, title, description } : { id: string, type?: TooltipType, place?: TooltipPlace, title: string, description: string }) => {
     return (
         <Fragment>
-            <span><InformationCircleIcon data-tip=" " data-for={id} className="text-gray-500 h-4 w-4" /></span>
+            <span><InformationCircleIcon data-tip=" " data-for={id} className="cursor-pointer text-gray-500 h-4 w-4" /></span>
             <ReactTooltip id={id} type={type} data-place={place} getContent={() => Content({title, description})} />
         </Fragment>
     );

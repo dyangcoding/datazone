@@ -25,7 +25,7 @@ const EmojiPicker = ( { id, name, onChange } : { id: string, name: string, onCha
         <Fragment>
             <div className="relative mt-1 flex rounded-md shadow-sm">
                 <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300">
-                    <EmojiHappyIcon className="text-gray-500 h-6 w-6" aria-hidden="true" onClick={() => togglePicker(!isPickerToggled)} />
+                    <EmojiHappyIcon className="cursor-pointer text-gray-500 h-6 w-6" aria-hidden="true" onClick={() => togglePicker(!isPickerToggled)} />
                 </span>
                 <input value={inputEmoji} id={id} name={name} type="text" autoComplete={name} onChange={onEmojiChange}
                     placeholder="matching an emoji within the body of a Tweet"
