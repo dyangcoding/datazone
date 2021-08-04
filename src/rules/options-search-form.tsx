@@ -1,6 +1,6 @@
 import React from "react";
 import Dropdown from "../components/dropdown";
-import Tooltip from "../components/tooltipWrapper";
+import Tooltip from "../components/tooltip-wrapper";
 import { RuleOptions, RuleOptionsProperties } from "../models/ruleOptions";
 import * as DESC from "../utils/stringUtils"
 

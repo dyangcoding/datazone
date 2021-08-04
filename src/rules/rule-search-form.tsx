@@ -1,6 +1,6 @@
 import React from "react";
 import { Rule, RuleProperties } from "../models/rule";
-import Tooltip from "../components/tooltipWrapper";
+import Tooltip from "../components/tooltip-wrapper";
 import * as DESC from "../utils/stringUtils"
 import EmojiPicker from "../components/emojiWrapper";
 

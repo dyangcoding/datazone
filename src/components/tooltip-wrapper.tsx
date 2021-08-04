@@ -10,10 +10,7 @@ export type TooltipPlace = typeof TOOLTIP_TYPES[number]
 
 const Content = ({ title, description } : { title: string, description: string } ) => {
     return (
-        <div className="flex flex-col w-60 h-52 lg:text-center rounded-lg text-white">
-            <div className="flex items-center justify-center px-2 py-2 text-center">
-                <InformationCircleIcon className="text-green-500 h-8 w-8" aria-hidden="true" />
-            </div>
+        <div className="flex flex-col w-60 h-40 lg:text-center rounded-lg text-white">
             <h2 className="text-base text-green-600 font-semibold tracking-wide uppercase">{title}</h2>
             <p className="flex-wrap leading-tight text-justify">
                 {description}
