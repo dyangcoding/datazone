@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import "emoji-mart/css/emoji-mart.css";
 import { EmojiHappyIcon } from "@heroicons/react/outline";
-import { BaseEmoji, Emoji, EmojiData, Picker } from "emoji-mart";
+import { BaseEmoji, EmojiData, Picker } from "emoji-mart";
 
 const EmojiPicker = ( { id, name, onChange } : { id: string, name: string, onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void}) => {
     const [inputEmoji, setEmoji] = useState("");
@@ -28,7 +28,7 @@ const EmojiPicker = ( { id, name, onChange } : { id: string, name: string, onCha
                     <EmojiHappyIcon className="cursor-pointer text-gray-500 h-6 w-6" aria-hidden="true" onClick={() => togglePicker(!isPickerToggled)} />
                 </span>
                 <input value={inputEmoji} id={id} name={name} type="text" autoComplete={name} onChange={onEmojiChange}
-                    placeholder="matching an emoji within the body of a Tweet"
+                    placeholder="emoji"
                     className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                 {isPickerToggled ? <Picker onClick={onEmojiClicked} set="twitter" style={{ position: "absolute", top: "50px", left: "0px" }} /> : null}
             </div>
