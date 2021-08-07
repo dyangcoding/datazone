@@ -2,7 +2,7 @@ import React from "react";
 import { Rule, RuleProperties } from "../models/rule";
 import Tooltip from "../components/tooltip-wrapper";
 import * as DESC from "../utils/stringUtils"
-import EmojiPicker from "../components/emojiWrapper";
+import EmojiPicker from "../components/emoji-picker";
 
 interface SearchFormProps {
     readonly rule?: RuleProperties;
@@ -52,7 +52,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 </div>
                             </div>
                             <input value={rule.keyword} type="text" name="keyword" id="keyword" autoComplete="keyword" onChange={this.onKeywordChange}
-                                placeholder="matching a keyword within the body of a Tweet"
+                                placeholder="keyword"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -80,7 +80,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                             </div>
                             
                             <input value={rule.hashtags} type="text" name="hashtags" id="hashtags" autoComplete="given-name" onChange={this.onHashtagsChange}
-                                placeholder="matching a recognized hashtag in a Tweet"
+                                placeholder="hashtags"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -102,7 +102,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="user" title="user" description={DESC.UserDesc} />
                             </div>
                             <input value={rule.mentionedUserId} type="text" name="user" id="user" autoComplete="user" onChange={this.onUserChange}
-                                placeholder="Matching any Tweet that mentions the given username"
+                                placeholder="username with @"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -114,7 +114,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="from-user" title="from a specific user" description={DESC.FromUserDesc} />
                             </div>
                             <input value={rule.fromUser} type="text" name="from-user" id="from-user" autoComplete="from-user" onChange={this.onFromUserChange}
-                                placeholder="Matching any Tweet from a specific user"
+                                placeholder="username without @ or user id"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -126,7 +126,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="to-user" title="in reply to a particular user" description={DESC.ToUserDesc} />
                             </div>
                             <input value={rule.toUser} type="text" name="to-user" id="to-user" autoComplete="to-user" onChange={this.onToUserChange}
-                                placeholder="Matching any Tweet that is in reply to a particular user"
+                                placeholder="username without @ or user id"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -138,7 +138,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="retweet-of-user" title="Retweets of the specified user" description={DESC.RetweetsOfUserDesc} />
                             </div>
                             <input value={rule.retweetsOfUser} type="text" name="retweet-of-user" id="retweet-of-user" autoComplete="retweet-of-user" onChange={this.onRetweetOfUserChange}
-                                placeholder="Matching Tweets that are Retweets of the specified user"
+                                placeholder="username without @ or user id"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -154,7 +154,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                     https://
                                 </span>
                                 <input value={rule.url} type="text" name="url" id="url" onChange={this.onUrlChange}
-                                    placeholder="matching any validly-formatted URL"
+                                    placeholder="url"
                                     className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"/>
                             </div>
                         </div>
@@ -167,7 +167,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="conversation-id" title="conversation ID" description={DESC.ConversationIdDesc} />
                             </div>
                             <input value={rule.conversationId} type="text" name="conversation" id="conversation" onChange={this.onConversationIdChange}
-                                placeholder="Matching Tweets that share a common conversation ID"
+                                placeholder="conversation ID"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -179,7 +179,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="context" title="context" description={DESC.ContextDesc} />
                             </div>
                             <input value={rule.context} type="text" name="context" id="context" onChange={this.onContextChange}
-                                placeholder="Matching Tweets with a specific domain id and/or domain id"
+                                placeholder="domain id and/or domain id"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -191,7 +191,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="entity" title="entity" description={DESC.EntityDesc} />
                             </div>
                             <input value={rule.entity} type="text" name="entity" id="entity" onChange={this.onEntityChange}
-                                placeholder="Matching Tweets with a specific entity"
+                                placeholder="entity"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
                     </div>
