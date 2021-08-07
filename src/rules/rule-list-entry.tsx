@@ -19,7 +19,7 @@ interface EntryState {
 
 }
 
-export class RuleEntryComponent extends React.Component<EntryProps, EntryState> {
+class RuleEntryComponent extends React.Component<EntryProps, EntryState> {
     constructor(props: EntryProps) {
         super(props)
 

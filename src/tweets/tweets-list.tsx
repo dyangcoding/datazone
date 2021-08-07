@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { User, UserMetrics, MatchingRule, Tweet, PublicMetrics } from "../models/tweet"
 import { ChatAltIcon, ReplyIcon, HeartIcon } from "@heroicons/react/solid";
 import { useGetTweetsQuery } from "../services/api";
+import Spinner from "../components/spinner";
 
 const PageInfo: () => JSX.Element = () => {
     return (
@@ -203,7 +204,7 @@ const RenderTableBody = ( { tweets } : { tweets: ReadonlyArray<Tweet> }) => {
 const TweetsList = () => {
     const { data: tweets, isLoading } = useGetTweetsQuery()
     if (isLoading) {
-        return <div>I am working on it...</div>;
+        return <Spinner />;
     }
     if (!tweets || !tweets.length) {
         return <PageInfo />;

@@ -1,13 +1,12 @@
 import { createAsyncThunk, createReducer } from "@reduxjs/toolkit";
-import { RuleClient } from "../services/ajax";
+import { RulesClient } from "../services/ajax";
 import { RuleProperties } from "../models/rule";
-
-export type Status = "idle" | "loading" | "completed" | "failed";
+import { Status } from "../app/store";
 
 interface RuleState {
-    value: RuleProperties[],
-    loading: Status,
-    error: String | undefined,
+    readonly value: ReadonlyArray<RuleProperties>,
+    readonly loading: Status,
+    readonly error: string | undefined,
 };
 
 interface UpdateRulePayload {
@@ -21,40 +20,39 @@ const initialState: RuleState = {
     error: undefined
 };
 
-export const fetchRules =  createAsyncThunk(
-    "rules/fetchRules", 
-    async () => RuleClient.fetchRules()
+export const loadRules =  createAsyncThunk(
+    "loadRules", 
+    async () => RulesClient.fetchRules()
 );
 
 export const addRule = createAsyncThunk(
-    "rules/addRule",
-    async (rule: RuleProperties) => RuleClient.createRule(rule)
+    "addRule",
+    async (rule: RuleProperties) => RulesClient.createRule(rule)
 );
 
 export const updateRule = createAsyncThunk(
-    "rules/updateOne", 
+    "updateRule", 
     async (payload: UpdateRulePayload) => {
         const {newRule, oldId} = payload;
-        return RuleClient.updateRule(newRule, oldId);
+        return RulesClient.updateRule(newRule, oldId);
     }
 );
 
 export const deleteRule = createAsyncThunk(
-    "rules/deleteOne", 
-    async (ruleId: number) => RuleClient.deleteRule(ruleId)
+    "deleteRule", 
+    async (ruleId: number) => RulesClient.deleteRule(ruleId)
 );
 
-// reducer
 export const ruleReducer = createReducer(initialState, (builder) => {
     builder
-    .addCase(fetchRules.pending, (state) => {
+    .addCase(loadRules.pending, (state) => {
         state.loading = "loading"
     })
-    .addCase(fetchRules.fulfilled, (state, action) => {
+    .addCase(loadRules.fulfilled, (state, action) => {
         state.loading = "completed"
         state.value = state.value.concat(action.payload)
     })
-    .addCase(fetchRules.rejected, (state, action) => {
+    .addCase(loadRules.rejected, (state, action) => {
         state.loading = "failed"
         state.error = action.error.message
     })

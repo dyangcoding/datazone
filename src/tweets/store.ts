@@ -1,36 +1,35 @@
 import { createAsyncThunk, createReducer } from "@reduxjs/toolkit";
-import { Tweet } from "../models/tweet";
-import { Status } from "../rules/store";
+import { Status } from "../app/store";
+import { TweetProperties } from "../models/tweet";
 import { TweetsClient } from "../services/ajax";
 
 interface TweetState {
-    value: Tweet[],
-    loading: Status,
-    error: String | undefined,
+    readonly value: ReadonlyArray<TweetProperties>,
+    readonly loading: Status,
+    readonly error: string | undefined,
 };
 
 const initialState: TweetState = {
-    value: [] as Tweet[],
+    value: [] as TweetProperties[],
     loading: "idle",
     error: undefined
 };
 
-export const fetchTweets =  createAsyncThunk(
-    "tweets/fetchTweets", 
+export const loadTweets =  createAsyncThunk(
+    "loadTweets", 
     async () => TweetsClient.fetchTweets()
 );
 
-// reducer
 export const tweetReducer = createReducer(initialState, (builder) => {
     builder
-    .addCase(fetchTweets.pending, (state) => {
+    .addCase(loadTweets.pending, (state) => {
         state.loading = "loading"
     })
-    .addCase(fetchTweets.fulfilled, (state, action) => {
+    .addCase(loadTweets.fulfilled, (state, action) => {
         state.loading = "completed"
-        state.value.concat(action.payload)
+        state.value = state.value.concat(action.payload)
     })
-    .addCase(fetchTweets.rejected, (state, action) => {
+    .addCase(loadTweets.rejected, (state, action) => {
         state.loading = "failed"
         state.error = action.error.message
     })

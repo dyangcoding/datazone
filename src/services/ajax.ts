@@ -1,12 +1,12 @@
 import axios, { AxiosResponse } from "axios";
-import { RuleProperties } from "../rules/rule";
+import { RuleProperties } from "../models/rule";
+import { TweetProperties } from "../models/tweet";
 
 const instance = axios.create({
 	baseURL: "http://localhost:8080/",
 	timeout: 15000,
   headers: {
     "Content-type": "application/json",
-    'Access-Control-Allow-Origin': "*",
   }
 });
 
@@ -19,7 +19,7 @@ const requests = {
 	delete: (url: string) => instance.delete(url).then(responseBody),
 };
 
-export const RuleClient = {
+export const RulesClient = {
   // necessary because all the Rules will be displayed on the history page 
   fetchRules: (): Promise<RuleProperties[]> => requests.get("rules"),
   getRuleById: (id: number): Promise<RuleProperties> => requests.get(`rules/${id}`),
@@ -31,7 +31,6 @@ export const RuleClient = {
   deleteRule: (id: number): Promise<void> => requests.delete(`posts/${id}`)
 }
 
-// TODO
 export const TweetsClient = {
-
+  fetchTweets: (): Promise<TweetProperties[]> => requests.get("tweets"),
 }
