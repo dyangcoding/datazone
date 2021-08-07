@@ -33,8 +33,8 @@ export const addRule = createAsyncThunk(
 
 export const updateRule = createAsyncThunk(
     "rules/updateOne", 
-    async (newRuleWithOldRuleId: UpdateRulePayload) => {
-        const {newRule, oldId} = newRuleWithOldRuleId;
+    async (payload: UpdateRulePayload) => {
+        const {newRule, oldId} = payload;
         return RuleClient.updateRule(newRule, oldId);
     }
 );
@@ -52,7 +52,7 @@ export const ruleReducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchRules.fulfilled, (state, action) => {
         state.loading = "completed"
-        state.value.concat(action.payload)
+        state.value = state.value.concat(action.payload)
     })
     .addCase(fetchRules.rejected, (state, action) => {
         state.loading = "failed"
