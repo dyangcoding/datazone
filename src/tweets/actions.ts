@@ -1,3 +1,4 @@
+import { tweetCollection } from "../app/mongo-client";
 import { ThunkAction } from "../app/store";
 import { TweetProperties } from "../models/tweet";
 
@@ -24,7 +25,14 @@ export interface LoadTweetsFailedAction {
 }
 
 export function loadTweets(): ThunkAction<Action> {
-    return (dispatch, getState) => {
-
+    return dispatch => {
+        dispatch({type: ActionType.LoadTweetsStartedAction});
+        const collection = tweetCollection();
+        collection.then(tweets => {
+            tweets.find().then(
+                results => dispatch({type: ActionType.LoadTweetsCompletedAction, tweets: results}),
+                reason => dispatch({type: ActionType.LoadTweetsFailedAction, error: reason})
+            )
+        })
     }
 }
