@@ -1,9 +1,19 @@
+import { ThunkAction as ReduxThunkAction } from "redux-thunk";
 import { ThunkDispatch as ReduxThunkDispatch } from "redux-thunk";
 import { Action, configureStore } from "@reduxjs/toolkit";
-import { ruleReducer } from "../rules/store";
-import { tweetReducer } from "../tweets/store";
+
+import { Action as TweetsAction } from "../tweets/actions";
+import { Action as RulesAction } from "../rules/actions";
+import { tweetReducer } from "../tweets/reducer";
+import { ruleReducer } from "../rules/reducer";
 
 export type ThunkDispatch<A extends Action=Action> = ReduxThunkDispatch<AppState, never, A>
+export type Status = "idle" | "loading" | "completed" | "failed";
+
+export type AppAction = TweetsAction | RulesAction
+
+export type ThunkAction<A extends AppAction, R = void> = ReduxThunkAction<R, AppState, never, A>
+export type AsyncThunkAction<A extends AppAction = AppAction, R = void> = ThunkAction<A, PromiseLike<R>>
 
 export const store = configureStore({
   reducer: {
