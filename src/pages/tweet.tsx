@@ -1,27 +1,15 @@
 import React from "react";
 import { SearchIcon } from "@heroicons/react/outline";
-import { RuleProperties } from "../models/rule";
-import TweetsList from "../tweets/tweets-list";
-import { connect } from "react-redux";
 import { RuleEditor } from "../rules/rule-editor";
-import { Tweet } from "../models/tweet";
-import { AppState } from "../app/store";
+import { TweetList } from "../tweets/tweet-list";
 
-interface StateProps {
-    readonly tweets: ReadonlyArray<Tweet>;
-}
-
-interface DispatchProps {
-    readonly onAddRule: (rule: RuleProperties) => Promise<RuleProperties>;
-}
-
-interface TweetProps extends StateProps, DispatchProps {}
+interface TweetProps {}
 
 interface TweetState {
     readonly toggleEditor: Boolean;
 }
 
-export class TweetComponent extends React.Component<TweetProps, TweetState> {
+export class Tweets extends React.Component<TweetProps, TweetState> {
     constructor(props: TweetProps) {
         super(props);
 
@@ -91,18 +79,10 @@ export class TweetComponent extends React.Component<TweetProps, TweetState> {
     }
 
     private renderTweets(): React.ReactNode {
-        return <TweetsList />;
+        return <TweetList />;
     }
 
     private onToggleEditor(): void {
         this.setState(state => ({toggleEditor: !state.toggleEditor}));
     }
 }
-
-function mapStateToProps(state: AppState): StateProps {
-    return {
-        tweets: state.tweets.value,
-    }
-}
-
-export const Tweets = connect(mapStateToProps)(TweetComponent)
