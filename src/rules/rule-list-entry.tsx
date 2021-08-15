@@ -2,7 +2,7 @@ import React from "react";
 import { RuleProperties } from "../models/rule";
 import { AdjustmentsIcon } from "@heroicons/react/outline";
 import { connect } from "react-redux";
-import { deleteRule, updateRule } from "./store";
+import { deleteRule, updateRule } from "./actions";
 
 interface StateProps {
     readonly rule: RuleProperties;

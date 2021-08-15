@@ -249,7 +249,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
         this.handleChange({entity: event.target.value});
     }
 
-    private handleChange(rule: RuleProperties): void {
+    private handleChange(rule: Partial<RuleProperties>): void {
         this.setState(previousState => ({rule: {...previousState.rule, ...rule}}), () => {
             if (this.props.onChange) {
                 this.props.onChange(this.state.rule);

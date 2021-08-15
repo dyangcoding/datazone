@@ -1,6 +1,8 @@
 import { RuleOptionsProperties } from "./ruleOptions";
 
-export interface RuleProperties {
+export interface UpstreamRuleProperties {
+    // required from MongoClient to fetch Rule Collection
+    readonly _id: number;
     // generated from Twitter API
     readonly id?: number;
     readonly createdAt?: Date;
@@ -19,6 +21,8 @@ export interface RuleProperties {
     readonly conversationId?: string;
     readonly options?: RuleOptionsProperties;
 }
+// remove _id which is only required from Mongo Client to fetch Rule Collection
+export type RuleProperties = Omit<UpstreamRuleProperties, "_id">;
 
 export class Rule implements RuleProperties {
     public readonly id?: number;
@@ -37,25 +41,4 @@ export class Rule implements RuleProperties {
     public readonly entity?: string;
     public readonly conversationId?: string;
     public readonly options?: RuleOptionsProperties;
-
-    public toProps(): RuleProperties {
-        return {
-            id: this.id,
-            createdAt: this.createdAt,
-            keyword: this.keyword,
-            tag: this.tag,
-            emoji: this.emoji,
-            mentionedUserId: this.mentionedUserId,
-            phrase: this.phrase,
-            hashtags: this.hashtags,
-            url: this.url,
-            fromUser: this.fromUser,
-            toUser: this.toUser,
-            retweetsOfUser: this.retweetsOfUser,
-            context: this.context,
-            entity: this.entity,
-            conversationId: this.conversationId,
-            options: this.options,
-        };
-    }
 }

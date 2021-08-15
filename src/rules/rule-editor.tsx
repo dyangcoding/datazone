@@ -6,7 +6,7 @@ import { Rule, RuleProperties } from "../models/rule";
 import { RuleOptionsProperties } from "../models/ruleOptions";
 import { OptionsSearchForm } from "./options-search-form";
 import { RuleSearchForm } from "./rule-search-form";
-import { addRule } from "./store";
+import { addRule } from "./actions";
 
 interface StateProps {
     readonly error?: String;
