@@ -1,4 +1,3 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ruleCollection } from "../app/mongo-client";
 import { ThunkAction } from "../app/store";
 import { RuleProperties, toRuleProperties } from "../models/rule";
@@ -7,10 +6,25 @@ import { RulesClient } from "../services/ajax";
 export enum ActionType {
     LoadRulesStartedAction = "LOAD_RULES_STARTED",
     LoadRulesCompletedAction = "LOAD_RULES_COMPLETED",
-    LoadRulesFailedAction = "LOAD_RULES_FAILED"
+    LoadRulesFailedAction = "LOAD_RULES_FAILED",
+
+    AddRuleStartedAction = "ADD_RULE_STARTED",
+    AddRuleCompletedAction = "ADD_RULE_COMPLETED",
+    AddRuleFailedAction = "ADD_RULE_FAILED",
+
+    UpdateRuleStartedAction = "UPDATE_RULE_STARTED",
+    UpdateRuleCompletedAction = "UPDATE_RULE_COMPLETED",
+    UpdateRuleFailedAction = "UPDATE_RULE_FAILED",
+
+    DeleteRuleStartedAction = "DELETE_RULE_STARTED",
+    DeleteRuleCompletedAction = "DELETE_RULE_COMPLETED",
+    DeletedRuleFailedAction = "DELETE_RULE_FAILED"
 }
 
-export type Action = LoadRulesStartedAction | LoadRulesCompletedAction | LoadRulesFailedAction;
+export type Action = LoadRulesStartedAction | LoadRulesCompletedAction | LoadRulesFailedAction 
+                | AddRuleStartedAction | AddRuleCompletedAction | AddRuleFailedAction
+                | UpdateRuleStartedAction | UpdateRuleCompletedAction | UpdateRuleFailedAction 
+                | DeleteRuleStartedAction | DeleteRuleCompletedAction | DeleteRuleFailedAction;
 
 export interface LoadRulesStartedAction {
     readonly type: ActionType.LoadRulesStartedAction;
@@ -26,9 +40,45 @@ export interface LoadRulesFailedAction {
     readonly error: Error;
 }
 
-interface UpdateRulePayload {
-    newRule: RuleProperties,
-    oldId: number,
+export interface AddRuleStartedAction {
+    readonly type: ActionType.AddRuleStartedAction;
+}
+
+export interface AddRuleCompletedAction {
+    readonly type: ActionType.AddRuleCompletedAction;
+    readonly rule: RuleProperties;
+}
+
+export interface AddRuleFailedAction {
+    readonly type: ActionType.AddRuleFailedAction;
+    readonly error: Error;
+}
+
+export interface UpdateRuleStartedAction {
+    readonly type: ActionType.UpdateRuleStartedAction;
+}
+
+export interface UpdateRuleCompletedAction {
+    readonly type: ActionType.UpdateRuleCompletedAction;
+    readonly rule: RuleProperties;
+}
+
+export interface UpdateRuleFailedAction {
+    readonly type: ActionType.UpdateRuleFailedAction;
+    readonly error: Error;
+}
+
+export interface DeleteRuleStartedAction {
+    readonly type: ActionType.DeleteRuleStartedAction;
+}
+
+export interface DeleteRuleCompletedAction {
+    readonly type: ActionType.DeleteRuleCompletedAction;
+}
+
+export interface DeleteRuleFailedAction {
+    readonly type: ActionType.DeletedRuleFailedAction;
+    readonly error: Error;
 }
 
 export function loadRules(): ThunkAction<Action> {
@@ -38,25 +88,37 @@ export function loadRules(): ThunkAction<Action> {
             collection.find().then(
                 results => dispatch({type: ActionType.LoadRulesCompletedAction, rules: toRuleProperties(results)}),
                 reason => dispatch({type: ActionType.LoadRulesFailedAction, error: reason})
-            )
+            );
         });
     }
 }
 
-export const addRule = createAsyncThunk(
-    "addRule",
-    async (rule: RuleProperties) => RulesClient.createRule(rule)
-);
-
-export const updateRule = createAsyncThunk(
-    "updateRule", 
-    async (payload: UpdateRulePayload) => {
-        const {newRule, oldId} = payload;
-        return RulesClient.updateRule(newRule, oldId);
+export function addRule(rule: RuleProperties): ThunkAction<Action> {
+    return dispatch => {
+        dispatch({type: ActionType.AddRuleStartedAction});
+        RulesClient.createRule(rule).then(
+            result => dispatch({type: ActionType.AddRuleCompletedAction, rule: result}),
+            reason => dispatch({type: ActionType.AddRuleFailedAction, error: reason})
+        );
     }
-);
+}
 
-export const deleteRule = createAsyncThunk(
-    "deleteRule", 
-    async (ruleId: number) => RulesClient.deleteRule(ruleId)
-);
+export function updateRule(newRule: RuleProperties, oldId: number): ThunkAction<Action> {
+    return dispatch => {
+        dispatch({type: ActionType.UpdateRuleStartedAction});
+        RulesClient.updateRule(newRule, oldId).then(
+            result => dispatch({type: ActionType.UpdateRuleCompletedAction, rule: result}),
+            reason => dispatch({type: ActionType.UpdateRuleFailedAction, error: reason})
+        );
+    }
+}
+
+export function deleteRule(ruleId: number): ThunkAction<Action> {
+    return dispatch => {
+        dispatch({type: ActionType.DeleteRuleStartedAction});
+        RulesClient.deleteRule(ruleId).then(
+            () => dispatch({type: ActionType.DeleteRuleCompletedAction}),
+            reason => dispatch({type: ActionType.DeletedRuleFailedAction, error: reason})
+        );
+    }
+}
