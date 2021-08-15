@@ -1,6 +1,6 @@
 import { ruleCollection } from "../app/mongo-client";
 import { ThunkAction } from "../app/store";
-import { RuleProperties, toRuleProperties } from "../models/rule";
+import { RuleProperties } from "../models/rule";
 import { RulesClient } from "../services/ajax";
 
 export enum ActionType {
@@ -84,12 +84,10 @@ export interface DeleteRuleFailedAction {
 export function loadRules(): ThunkAction<Action> {
     return dispatch => {
         dispatch({type: ActionType.LoadRulesStartedAction});
-        ruleCollection().then(collection => {
-            collection.find().then(
-                results => dispatch({type: ActionType.LoadRulesCompletedAction, rules: toRuleProperties(results)}),
-                reason => dispatch({type: ActionType.LoadRulesFailedAction, error: reason})
-            );
-        });
+        ruleCollection().then(
+            results => dispatch({type: ActionType.LoadRulesCompletedAction, rules: results}),
+            reason => dispatch({type: ActionType.LoadRulesFailedAction, error: reason})
+        );
     }
 }
 
