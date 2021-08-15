@@ -23,11 +23,10 @@ export function ruleReducer(state: RuleState = initialState, action: Action): Ru
             };
         }
         case ActionType.LoadRulesCompletedAction: {
-            const uniqueRules = Array.from(new Set(action.rules.concat(state.value)));
             return {
                 ...state,
                 loading: "completed",
-                value: uniqueRules
+                value: action.rules
             };
         }
         case ActionType.LoadRulesFailedAction: {

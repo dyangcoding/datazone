@@ -22,11 +22,10 @@ export function tweetReducer(state: TweetState = initialState, action: Action): 
                 loading: "loading"
             }
         case ActionType.LoadTweetsCompletedAction:
-            const uniqueTweets = Array.from(new Set(action.tweets.concat(state.value)));
             return {
                 ...state,
                 loading: "completed",
-                value: uniqueTweets
+                value: action.tweets
             }
         case ActionType.LoadTweetsFailedAction:
             return {
