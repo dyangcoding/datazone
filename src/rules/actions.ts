@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ruleCollection } from "../app/mongo-client";
 import { ThunkAction } from "../app/store";
-import { RuleProperties } from "../models/rule";
+import { RuleProperties, toRuleProperties } from "../models/rule";
 import { RulesClient } from "../services/ajax";
 
 export enum ActionType {
@@ -34,13 +34,12 @@ interface UpdateRulePayload {
 export function loadRules(): ThunkAction<Action> {
     return dispatch => {
         dispatch({type: ActionType.LoadRulesStartedAction});
-        const collection = ruleCollection();
-        collection.then(rules => {
-            rules.find().then(
-                results => dispatch({type: ActionType.LoadRulesCompletedAction, rules: results}),
+        ruleCollection().then(collection => {
+            collection.find().then(
+                results => dispatch({type: ActionType.LoadRulesCompletedAction, rules: toRuleProperties(results)}),
                 reason => dispatch({type: ActionType.LoadRulesFailedAction, error: reason})
             )
-        })
+        });
     }
 }
 

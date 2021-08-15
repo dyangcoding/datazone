@@ -1,3 +1,4 @@
+import emoji from "emoji-mart/dist-es/components/emoji/emoji";
 import { RuleOptionsProperties } from "./ruleOptions";
 
 export interface UpstreamRuleProperties {
@@ -41,4 +42,27 @@ export class Rule implements RuleProperties {
     public readonly entity?: string;
     public readonly conversationId?: string;
     public readonly options?: RuleOptionsProperties;
+}
+
+export function toRuleProperties(rules: ReadonlyArray<UpstreamRuleProperties>): ReadonlyArray<RuleProperties> {
+    return rules.map(rule => {
+        return {
+            id: rule.id,
+            createdAt: rule.createdAt,
+            keyword: rule.keyword,
+            tag: rule.tag,
+            emoji: rule.emoji,
+            mentionedUserId: rule.mentionedUserId,
+            phrase: rule.phrase,
+            hashtags: rule.hashtags,
+            url: rule.hashtags,
+            fromUser: rule.fromUser,
+            toUser: rule.toUser,
+            retweetsOfUser: rule.retweetsOfUser,
+            context: rule.context,
+            entity: rule.entity,
+            conversationdId: rule.conversationId,
+            options: rule.options
+        } as RuleProperties    
+    });
 }

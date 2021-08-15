@@ -68,7 +68,7 @@ export interface UpstreamTweetProperties {
     readonly _id: string;
     readonly id?: string;
     readonly text?: string;
-    readonly createAt?: string;
+    readonly createdAt?: string;
     readonly author?: User;
     readonly inReplyToUserId?: string;
     readonly publicMetrics?: PublicMetrics;
@@ -84,3 +84,24 @@ export interface UpstreamTweetProperties {
 
 // remove _id which is only required from Mongo Client to fetch Tweet Collection
 export type TweetProperties = Omit<UpstreamTweetProperties, "_id">
+
+export function toTweetProperties(tweets: ReadonlyArray<UpstreamTweetProperties>): ReadonlyArray<TweetProperties> {
+    return tweets.map(tweet => {
+        return {
+            id: tweet.id,
+            text: tweet.text,
+            createdAt: tweet.createdAt,
+            author: tweet.author,
+            inReplyToUserId: tweet.inReplyToUserId,
+            publicMetrics: tweet.publicMetrics,
+            nonPublicMetrics: tweet.nonPublicMetrics,
+            context: tweet.context,
+            entities: tweet.entities,
+            mentionedUsers: tweet.mentionedUsers,
+            matchingRules: tweet.matchingRules,
+            conversationId: tweet.conversationId,
+            source: tweet.source,
+            lang: tweet.lang
+        } as TweetProperties
+    });
+}

@@ -1,6 +1,6 @@
 import { tweetCollection } from "../app/mongo-client";
 import { ThunkAction } from "../app/store";
-import { TweetProperties } from "../models/tweet";
+import { toTweetProperties, TweetProperties } from "../models/tweet";
 
 export enum ActionType {
     LoadTweetsStartedAction = "LOAD_TWEETS_STARTED",
@@ -27,12 +27,11 @@ export interface LoadTweetsFailedAction {
 export function loadTweets(): ThunkAction<Action> {
     return dispatch => {
         dispatch({type: ActionType.LoadTweetsStartedAction});
-        const collection = tweetCollection();
-        collection.then(tweets => {
-            tweets.find().then(
-                results => dispatch({type: ActionType.LoadTweetsCompletedAction, tweets: results}),
+        tweetCollection().then(collection => {
+            collection.find().then(
+                results => dispatch({type: ActionType.LoadTweetsCompletedAction, tweets: toTweetProperties(results)}),
                 reason => dispatch({type: ActionType.LoadTweetsFailedAction, error: reason})
             )
-        })
+        });
     }
 }
