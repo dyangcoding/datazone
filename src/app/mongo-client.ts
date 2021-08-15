@@ -1,7 +1,7 @@
 
 import * as Realm from "realm-web";
 import { UpstreamRuleProperties } from "../models/rule";
-import { TweetProperties } from "../models/tweet";
+import { UpstreamTweetProperties } from "../models/tweet";
 
 const REALM_APP_ID = process.env.REACT_APP_REALM_APP_ID || "";
 const app = new Realm.App({ id: REALM_APP_ID });
@@ -23,5 +23,5 @@ export async function ruleCollection() {
 
 export async function tweetCollection() {
     const mongoDb = await getMongoDB();
-    return mongoDb.db("dataZone").collection<TweetProperties>("tweets");
+    return mongoDb.db("dataZone").collection<UpstreamTweetProperties>("tweets");
 }

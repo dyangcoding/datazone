@@ -48,9 +48,9 @@ export interface User {
 }
 
 export interface Url {
-    readonly url: String;
-    readonly expandedUrl: String;
-    readonly displayUrl: String;
+    readonly url: string;
+    readonly expandedUrl: string;
+    readonly displayUrl: string;
 }
 
 export interface Entities {
@@ -63,34 +63,24 @@ export interface MatchingRule {
     readonly tag: string;
 }
 
-export interface TweetProperties {
-    readonly id: string;
-    readonly text: string;
-    readonly createAt: string;
-    readonly authorId: string;
-    readonly context?: ReadonlyArray<Context>;
-    readonly entities?: ReadonlyArray<Entities>;
-    readonly matchingRules: ReadonlyArray<MatchingRule>;
-    readonly lang: string; 
+export interface UpstreamTweetProperties {
+    // required from MongoClient to fetch TweetCollection
+    readonly _id: string;
+    readonly id?: string;
+    readonly text?: string;
+    readonly createAt?: string;
+    readonly author?: User;
+    readonly inReplyToUserId?: string;
+    readonly publicMetrics?: PublicMetrics;
+    readonly nonPublicMetrics?: NonPublicMetrics;
+    readonly context?: Context;
+    readonly entities?: Entities;
+    readonly mentionedUsers?: ReadonlyArray<User>;
+    readonly matchingRules?: ReadonlyArray<MatchingRule>;
+    readonly conversationId?: string;
+    readonly source?: string;
+    readonly lang?: string; 
 }
 
-export class Tweet {
-    public readonly id: string | undefined;
-    public readonly text: string | undefined;
-    public readonly createAt: string | undefined;
-    public readonly author: User | undefined;
-    public readonly inReplyToUserId: string | undefined;
-    public readonly publicMetrics?: PublicMetrics | undefined;
-    public readonly nonPublicMetrics?: NonPublicMetrics | undefined;
-    public readonly context?: Context | undefined;
-    public readonly entities?: Entities | undefined;
-    public readonly mentionedUsers?: ReadonlyArray<User> | undefined;
-    public readonly matchingRules?: ReadonlyArray<MatchingRule> | undefined;
-    public readonly conversationId?: string;
-    public readonly source?: string;
-    public readonly lang: string | undefined;
-
-    constructor() {
-
-    }
-}
+// remove _id which is only required from Mongo Client to fetch Tweet Collection
+export type TweetProperties = Omit<UpstreamTweetProperties, "_id">
