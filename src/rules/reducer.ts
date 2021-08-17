@@ -17,24 +17,13 @@ const initialState: RuleState = {
 export function ruleReducer(state: RuleState = initialState, action: Action): RuleState {
     switch (action.type) {
         case ActionType.LoadRulesStartedAction: {
-            return {
-                ...state,
-                loading: "loading"
-            };
+            return {...state, loading: "loading"};
         }
         case ActionType.LoadRulesCompletedAction: {
-            return {
-                ...state,
-                loading: "completed",
-                value: action.rules
-            };
+            return {...state, loading: "completed", value: action.rules};
         }
         case ActionType.LoadRulesFailedAction: {
-            return {
-                ...state,
-                loading: "failed",
-                error: action.error.message
-            };
+            return {...state, loading: "failed", error: action.error.message};
         }
         default:
             return state;

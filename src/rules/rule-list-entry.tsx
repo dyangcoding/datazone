@@ -74,7 +74,7 @@ class RuleEntryComponent extends React.Component<EntryProps, EntryState> {
 
 function mapDispatchToProps(dispatch: any): DispatchProps {
     return {
-        onEditRule: (rule: RuleProperties, id: number) => dispatch(updateRule({newRule: rule, oldId: id})),
+        onEditRule: (rule: RuleProperties, id: number) => dispatch(updateRule(rule, id)),
         onDeleteRule: (id: number) => dispatch(deleteRule(id))
     };
 }

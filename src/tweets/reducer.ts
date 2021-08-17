@@ -17,22 +17,18 @@ const initialState: TweetState = {
 export function tweetReducer(state: TweetState = initialState, action: Action): TweetState {
     switch (action.type) {
         case ActionType.LoadTweetsStartedAction:
-            return {
-                ...state,
-                loading: "loading"
-            }
+            return {...state, loading: "loading"}
         case ActionType.LoadTweetsCompletedAction:
-            return {
-                ...state,
-                loading: "completed",
-                value: action.tweets
-            }
+            return {...state, loading: "completed", value: action.tweets}
         case ActionType.LoadTweetsFailedAction:
-            return {
-                ...state,
-                loading: "failed",
-                error: action.error.message
-            }
+            return {...state, loading: "failed", error: action.error.message}
+        case ActionType.TweetInsertingStartedAction:
+            return {...state, loading: "inserting"}
+        case ActionType.TweetInsertingCompletedAction:
+            const results = [action.tweet].concat(state.value);
+            return {...state, loading: "completed", value: results}
+        case ActionType.TweetInsertingFailedAction:
+            return {...state, loading: "failed", error: action.error.message}
         default:
             return state;
     }

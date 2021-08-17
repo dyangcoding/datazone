@@ -1,11 +1,10 @@
-
 import * as Realm from "realm-web";
 import { RuleProperties, UpstreamRuleProperties } from "../models/rule";
 import { TweetProperties, UpstreamTweetProperties } from "../models/tweet";
 
 /*
-Modify Change Stream Output using Aggregation Pipelines
-You can control change stream output by providing an array of one or more of the following pipeline stages when configuring the change stream:
+Modify Mongo Collection Output using Aggregation Pipelines
+You can control collection output by providing an array of one or more of the following pipeline stages when configuring the change stream:
 $match, $project, $addFields, $replaceRoot, $redact
 See Change Events for more information on the change stream response document format.
 https://docs.mongodb.com/manual/reference/change-events/#change-stream-output
@@ -29,7 +28,7 @@ async function getMongoDB() {
     return currentUser.mongoClient("mongodb-atlas");
 }
 
-export async function ruleCollection() {
+export async function fetchRules() {
     const mongoDb = await getMongoDB();
     return mongoDb
         .db("dataZone")
@@ -42,7 +41,12 @@ export async function tweetCollection() {
     const mongoDb = await getMongoDB();
     return mongoDb
         .db("dataZone")
-        .collection<UpstreamTweetProperties>("tweets")
+        .collection<UpstreamTweetProperties>("tweets");
+}
+
+export async function fetchTweets() {
+    const collection = await tweetCollection()
+    return collection
         .aggregate(pipeline)
         .then(tweets => tweets as ReadonlyArray<TweetProperties>);
 }

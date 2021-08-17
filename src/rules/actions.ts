@@ -1,4 +1,4 @@
-import { ruleCollection } from "../app/mongo-client";
+import { fetchRules } from "../app/mongo-client";
 import { ThunkAction } from "../app/store";
 import { RuleProperties } from "../models/rule";
 import { RulesClient } from "../services/ajax";
@@ -84,7 +84,7 @@ export interface DeleteRuleFailedAction {
 export function loadRules(): ThunkAction<Action> {
     return dispatch => {
         dispatch({type: ActionType.LoadRulesStartedAction});
-        ruleCollection().then(
+        fetchRules().then(
             results => dispatch({type: ActionType.LoadRulesCompletedAction, rules: results}),
             reason => dispatch({type: ActionType.LoadRulesFailedAction, error: reason})
         );

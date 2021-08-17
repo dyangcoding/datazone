@@ -2,10 +2,10 @@ import { RuleOptionsProperties } from "./ruleOptions";
 
 export interface UpstreamRuleProperties {
     // required from MongoClient to fetch Rule Collection
-    readonly _id: number;
+    readonly _id: string;
     // generated from Twitter API
-    readonly id?: number;
-    readonly createdAt?: Date;
+    readonly id?: string;
+    readonly createdAt?: string;
     readonly keyword?: string;
     readonly tag?: string;
     readonly emoji?: string;
@@ -25,8 +25,8 @@ export interface UpstreamRuleProperties {
 export type RuleProperties = Omit<UpstreamRuleProperties, "_id">;
 
 export class Rule implements RuleProperties {
-    public readonly id?: number;
-    public readonly createdAt?: Date;
+    public readonly id?: string;
+    public readonly createdAt?: string;
     public readonly keyword?: string;
     public readonly tag?: string;
     public readonly emoji?: string;

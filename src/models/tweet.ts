@@ -82,5 +82,24 @@ export interface UpstreamTweetProperties {
     readonly lang?: string; 
 }
 
+export function toTweetProperties(tweet: UpstreamTweetProperties): TweetProperties {
+    return {
+        id: tweet.id,
+        text: tweet.text,
+        createdAt: tweet.createdAt,
+        author: tweet.author,
+        inReplyToUserId: tweet.inReplyToUserId,
+        publicMetrics: tweet.publicMetrics,
+        nonPublicMetrics: tweet.nonPublicMetrics,
+        context: tweet.context,
+        entities: tweet.entities,
+        mentionedUsers: tweet.mentionedUsers,
+        matchingRules: tweet.matchingRules,
+        conversationId: tweet.conversationId,
+        source: tweet.source,
+        lang: tweet.lang
+    } as TweetProperties;
+}
+
 // remove _id which is only required from Mongo Client to fetch Tweet Collection
 export type TweetProperties = Omit<UpstreamTweetProperties, "_id">;
