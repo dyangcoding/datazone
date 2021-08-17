@@ -1,15 +1,16 @@
-import React, { Fragment } from "react";
-import { User, UserMetrics, MatchingRule, TweetProperties, PublicMetrics } from "../models/tweet"
-import { ChatAltIcon, ReplyIcon, HeartIcon, EmojiSadIcon } from "@heroicons/react/solid";
+import React from "react";
+import { TweetProperties, } from "../models/tweet"
+import { ChatAltIcon, EmojiSadIcon } from "@heroicons/react/solid";
 import Spinner from "../components/spinner";
 import { AppState } from "../app/store";
 import { loadTweets } from "./actions";
 import { connect } from "react-redux";
+import { TweetListEntry } from "./tweet-list-entry";
 
 interface StateProps {
     readonly tweets: ReadonlyArray<TweetProperties>;
-    readonly isLoading: String;
-    readonly error: String | undefined;
+    readonly isLoading: string;
+    readonly error: string | undefined;
 }
 
 interface DispatchProps {
@@ -32,57 +33,20 @@ class TweetListComponent extends React.Component<TweetProps> {
         if (isLoading === "loading") {
             return <Spinner />;
         }
-        else if (error) {
-            {this.renderError()}
-        } else {
-            return (
-                <Fragment>
-                    <div className="flex flex-col my-4">
-                        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                                <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                                    <table className="min-w-full divide-y divide-gray-200">
-                                        {this.renderHeader()}
-                                        {this.renderBody()}
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </Fragment>
-            );
+        if (error) {
+            return this.renderError();
         }
+        return this.renderTweets();
     }
 
-    private renderHeader(): React.ReactNode {
+    private renderTweets(): React.ReactNode {
+        const tweets = this.props.tweets;
         return (
-            <Fragment>
-                <thead className="bg-gray-50">
-                    <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            User
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Text
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Matching Rules
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Hashtags
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Mentioned Users
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Metrics
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Source
-                        </th>
-                    </tr>
-                </thead>
-            </Fragment>
+            <div className="py-5 space-y-4">
+                {tweets.map(tweet => {
+                    return <TweetListEntry tweet={tweet} />
+                })}
+            </div>
         );
     }
 
@@ -100,41 +64,6 @@ class TweetListComponent extends React.Component<TweetProps> {
                     Check Connection OR refresh the Page
                 </div>
             </div>
-        );
-    }
-    
-    private renderBody(): React.ReactNode {
-        const tweets = this.props.tweets;
-        return (
-            <Fragment>
-                <tbody className="bg-white divide-y divide-gray-200">
-                    {tweets.map((tweet) => (
-                        <tr key={tweet.id}>
-                            <td className="px-4 py-4 whitespace-nowrap">
-                                {this.renderUser(tweet.author)}
-                            </td>
-                            <td className="px-4 py-4">
-                                <div className="text-sm text-gray-900">{tweet.text}</div>
-                            </td>
-                            <td className="px-4 py-4">
-                                {this.renderMatchingRules(tweet.matchingRules)}
-                            </td>
-                            <td className="px-4 py-4">
-                                {this.renderHashtags(tweet.entities?.hashtags)}
-                            </td>
-                            <td className="px-4 py-4">
-                                {this.renderMentionedUsers(tweet.mentionedUsers)}
-                            </td>
-                            <td className="px-4 py-4">
-                                {this.renderPublicMetrics(tweet.publicMetrics)}
-                            </td>
-                            <td className="px-4 py-4 text-sm text-gray-500">
-                                {tweet.source}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Fragment>
         );
     }
 
@@ -155,126 +84,13 @@ class TweetListComponent extends React.Component<TweetProps> {
             </div>
         );
     }
-
-    private renderUserMetrics(metrics: UserMetrics | undefined): React.ReactNode {
-        if (!metrics) {
-            return null;
-        }
-        return (
-            <div className="text-sm text-gray-500">
-                <span className="pr-2">{metrics.followingCount} following</span>
-                <span className="pr-2">{metrics.followersCount} followers</span>
-                <span className="pr-2">{metrics.tweetCount} tweets</span>
-            </div>
-        );    
-    }
-
-    private renderUser(author: User | undefined): React.ReactNode {
-        return (
-            <div className="flex items-center">
-                <div className="flex-shrink-0 h-10 w-10">
-                    <img className="h-10 w-10 rounded-full" src={author?.profileImageUrl} alt="" />
-                </div>
-                <div className="ml-4 text-sm font-medium text-gray-900">
-                    <div className="whitespace-pre-line">
-                        <span className="pr-2">{author?.name}</span>
-                    </div>
-                    {author && author.createdAt 
-                        ? 
-                        <span className="">Joined {new Date(author.createdAt).toDateString()}</span>
-                        :
-                        undefined
-                    }
-                </div>
-            </div>
-        );
-    }
-
-    private renderMatchingRules(matchingRules: ReadonlyArray<MatchingRule> | undefined): React.ReactNode {
-        if (!matchingRules || !matchingRules.length) {
-            return null;
-        }
-        return (
-            <Fragment>
-                {matchingRules.map(rule => (
-                    <span key={rule.id} className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        {rule.tag}
-                    </span>
-                ))}
-            </Fragment>
-        );
-    }
-
-    private renderHashtags(hashtags: ReadonlyArray<string> | undefined): React.ReactNode {
-        if (!hashtags || !hashtags.length) {
-            return null;
-        }
-        return (
-            <Fragment>
-                {hashtags.map(hashtag => (
-                    <span key={hashtag} className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                        {hashtag}
-                    </span>
-                ))}
-            </Fragment>
-        );
-    }
-
-    private renderMentionedUsers(mentionedUsers: ReadonlyArray<User> | undefined): React.ReactNode {
-        if (!mentionedUsers || !mentionedUsers.length) {
-            return null;
-        }
-        return (
-            <Fragment>
-                {mentionedUsers.map(user => (
-                    <span key={user.id} className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                        {user.name}
-                    </span>
-                ))}
-            </Fragment>
-        );
-    }
-
-    private renderPublicMetrics(metrics: PublicMetrics | undefined): React.ReactNode {
-        if (!metrics) {
-            return null;
-        }
-        return (
-            <div className="flex">
-                {metrics.retweetCount > 0 
-                    ? 
-                    <div className="inline-flex items-center text-sm px-1">
-                        <ReplyIcon className="h-4 w-4 mr-1" /> 
-                        <span>{metrics.retweetCount}</span>
-                    </div> 
-                    : undefined
-                }
-                {metrics.replyCount > 0 
-                    ?
-                    <div className="inline-flex items-center text-sm px-1">
-                        <ReplyIcon className="h-4 w-4" />
-                        <span>{metrics.replyCount}</span>
-                    </div>
-                    : undefined
-                }
-                {metrics.likeCount > 0 
-                    ?
-                    <div className="inline-flex items-center text-sm px-1">
-                        <HeartIcon className="h-4 w-4" />
-                        <span>{metrics.likeCount}</span>
-                    </div>
-                    : undefined
-                }
-            </div>
-        );
-    }
 }
 
 function mapStateToProps(state: AppState): StateProps {
     return {
         tweets: state.tweets.value,
-        isLoading: state.rules.loading,
-        error: state.rules.error
+        isLoading: state.tweets.loading,
+        error: state.tweets.error
     };
 }
 
