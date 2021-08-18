@@ -5,12 +5,13 @@ import { RuleProperties } from "../models/rule";
 import { connect } from "react-redux";
 import { RuleEntry } from "../rules/rule-list-entry";
 import { AppState } from "../app/store";
-import { fetchRules } from "../rules/store";
+import Spinner from "../components/spinner";
+import { loadRules } from "../rules/actions";
 
 interface StateProps {
     readonly rules: ReadonlyArray<RuleProperties>;
-    readonly isLoading: String;
-    readonly error: String | undefined;
+    readonly isLoading: string;
+    readonly error: string | undefined;
 }
 
 interface DispatchProps {
@@ -24,17 +25,18 @@ export class RuleComponent extends React.Component<RuleProps> {
         super(props);
     }
 
+    public componentDidMount(): void {
+        this.props.onLoad();
+    }
+
     public render(): React.ReactNode {
-        const {error, isLoading, onLoad} = this.props;
         return (
             <Fragment>
-                {error ? this.renderError() : undefined}
                 {this.renderHeader()}
-                {this.renderPageInfo()}
                 {this.renderRuleInfo()}
                 {this.renderRules()}
             </Fragment>
-        )
+        );
     }
 
     private renderHeader(): React.ReactNode {
@@ -84,7 +86,7 @@ export class RuleComponent extends React.Component<RuleProps> {
     private renderRuleInfo(): React.ReactNode {
         return (
             <Fragment>
-                <div className="flex justify-between">
+                <div className="flex justify-between space-x-4">
                     <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                         <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                             <div className="sm:flex sm:items-start">
@@ -157,13 +159,28 @@ export class RuleComponent extends React.Component<RuleProps> {
     }
 
     private renderRules(): React.ReactNode {
-        const rules = this.props.rules;
+        const {rules, error, isLoading} = this.props;
+        if (isLoading === "loading") {
+            return <Spinner />;
+        }
+        if (error) {
+            return this.renderError();
+        }
+        if (!rules.length) {
+            return this.renderPageInfo();
+        }
         return (
-            <div className="flex flex-col bg-white divide-y divide-gray-200 my-4">
-                {rules?.map(rule => (
-                    <RuleEntry key={rule.twitterGenId} rule={rule} />
-                ))}
-            </div>
+            <Fragment>
+                <div className="flex justify-between items-center border rounded-md bg-green-500 text-white px-4 py-5">
+                        <h3 className="text-xl font-bold leading-6 font-medium">Rules</h3>
+                        <p className="mt-1 max-w-2xl text-sm border-2 rounded-full py-3 px-6">{this.props.rules.length}</p>
+                    </div>
+                <div className="flex flex-col bg-white divide-y divide-gray-200 my-4">
+                    {rules.map(rule => (
+                        <RuleEntry key={rule.id} rule={rule} />
+                    ))}
+                </div>
+            </Fragment>
         );
     }
 }
@@ -178,7 +195,7 @@ function mapStateToProps(state: AppState): StateProps {
 
 function mapDispatchToProps(dispatch: any): DispatchProps {
     return {
-        onLoad: () => dispatch(fetchRules())
+        onLoad: () => dispatch(loadRules())
     }
 }
 
