@@ -41,10 +41,17 @@ class TweetListComponent extends React.Component<TweetProps> {
 
     private renderTweets(): React.ReactNode {
         const tweets = this.props.tweets;
+        if (!tweets || !tweets.length) {
+            return this.renderPageInfo();
+        }
         return (
             <div className="py-5 space-y-4">
+                <div className="flex justify-between items-center border rounded-md bg-blue-500 text-white px-4 py-5">
+                    <h3 className="text-xl font-bold leading-6 font-medium">Realtime Tweets</h3>
+                    <p className="mt-1 max-w-2xl text-sm border-2 rounded-full py-3 px-6">{this.props.tweets.length}</p>
+                </div>
                 {tweets.map(tweet => {
-                    return <TweetListEntry tweet={tweet} />
+                    return <TweetListEntry key={tweet.id} tweet={tweet} />
                 })}
             </div>
         );
@@ -70,7 +77,9 @@ class TweetListComponent extends React.Component<TweetProps> {
     private renderPageInfo(): React.ReactNode {
         return (
             <div className="lg:text-center py-6 border-2 border-gray-300 border-dashed rounded-lg">
-                <div className="flex items-center justify-center px-2 py-4 text-center"><ChatAltIcon className="text-green-500 h-12 w-12" aria-hidden="true" /></div>
+                <div className="flex items-center justify-center px-2 py-4 text-center">
+                    <ChatAltIcon className="text-green-500 h-12 w-12" aria-hidden="true" />
+                </div>
                 <h2 className="text-base text-green-600 font-semibold tracking-wide uppercase">No Tweets</h2>
                 <p className="text-lg text-gray-500">
                     Get Started by creating a new Rule
