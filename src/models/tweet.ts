@@ -11,8 +11,8 @@ export interface Entity {
 }
 
 export interface Context {
-    readonly domains?: ReadonlyArray<Domain>;
-    readonly entities?: ReadonlyArray<Entity>;
+    readonly domain?: ReadonlyArray<Domain>;
+    readonly entity?: ReadonlyArray<Entity>;
 }
 
 export interface PublicMetrics {

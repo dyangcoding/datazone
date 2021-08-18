@@ -14,17 +14,17 @@ export class TweetListEntry extends React.Component<ListEntryProps> {
     public render(): React.ReactNode {
         return (
             <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-                <dl className="odd:bg-gray-50">
-                    {this.renderAuthor()}
-                    {this.renderDate()}
-                    {this.renderHashtags()}
-                    {this.renderPublicMetrics()}
-                    {this.renderNonPublicMetrics()}
-                    {this.renderMentionedUsers()}
-                    {this.renderText()}
-                    {this.renderMatchingRules()}
-                    {this.renderSource()}
-                </dl>
+                {this.renderAuthor()}
+                {this.renderDate()}
+                {this.renderHashtags()}
+                {this.renderPublicMetrics()}
+                {this.renderNonPublicMetrics()}
+                {this.renderDomains()}
+                {this.renderEntity()}
+                {this.renderMentionedUsers()}
+                {this.renderText()}
+                {this.renderMatchingRules()}
+                {this.renderSource()}
             </div>
         );
     }
@@ -94,11 +94,13 @@ export class TweetListEntry extends React.Component<ListEntryProps> {
             <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">Hashtags</dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 space-x-2">
-                    {hashtags.map(hashtag => (
-                        <span key={hashtag} className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                            {hashtag}
-                        </span>
-                    ))}
+                    {hashtags.map(hashtag => {
+                        return (
+                            <span key={hashtag} className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                {"#".concat(hashtag)}
+                            </span>
+                        )
+                    })}
                 </dd>
             </div>
         );
@@ -151,7 +153,7 @@ export class TweetListEntry extends React.Component<ListEntryProps> {
         }
         return (
             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Public Metrics</dt>
+                <dt className="text-sm font-medium text-gray-500">Non Public Metrics</dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     <div className="flex">
                         {metrics.impressionCount > 0 
@@ -179,6 +181,48 @@ export class TweetListEntry extends React.Component<ListEntryProps> {
                             : undefined
                         }
                     </div>
+                </dd>
+            </div>
+        );
+    }
+
+    private renderDomains(): React.ReactNode {
+        const domains = this.props.tweet.context?.domain;
+        if (!domains || !domains.length) {
+            return null;
+        }
+        return (
+            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Domain</dt>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 space-x-2">
+                    {domains.map(domain => {
+                        return (
+                            <span key={domain.id} className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                {domain.name}
+                            </span>
+                        )
+                    })}
+                </dd>
+            </div>
+        );
+    }
+
+    private renderEntity(): React.ReactNode {
+        const entityList = this.props.tweet.context?.entity;
+        if (!entityList || !entityList.length) {
+            return null;
+        }
+        return (
+            <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Entity</dt>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 space-x-2">
+                    {entityList.map(entity => {
+                        return (
+                            <span key={entity.id} className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                                {entity.name}
+                            </span> 
+                        )
+                    })}
                 </dd>
             </div>
         );
