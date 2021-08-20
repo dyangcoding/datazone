@@ -44,7 +44,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                         <div className="col-span-4">
                             <div className="flex justify-between">
                                 <label htmlFor="keyword" className="flex items-center justify-between text-sm font-medium text-gray-700">
-                                    Keyword
+                                    Keyword/Payload
                                 </label>
                                 <div className="flex items-center space-x-2">
                                     <span className="text-sm text-gray-400">Max. 256 Characters</span>
@@ -67,7 +67,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 </div>
                             </div>
                             <input value={rule.tag} type="text" name="tag" id="tag" autoComplete="tag" onChange={this.onTagChange}
-                                placeholder="a simple string to identify the rule"
+                                placeholder="a simple short string to identify the rule"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -102,7 +102,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="user" title="user" description={DESC.UserDesc} />
                             </div>
                             <input value={rule.mentionedUserId} type="text" name="user" id="user" autoComplete="user" onChange={this.onUserChange}
-                                placeholder="username with @"
+                                placeholder="@username"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -114,7 +114,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="from-user" title="from a specific user" description={DESC.FromUserDesc} />
                             </div>
                             <input value={rule.fromUser} type="text" name="from-user" id="from-user" autoComplete="from-user" onChange={this.onFromUserChange}
-                                placeholder="username without @ or user id"
+                                placeholder="username or user id"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -126,7 +126,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="to-user" title="in reply to a particular user" description={DESC.ToUserDesc} />
                             </div>
                             <input value={rule.toUser} type="text" name="to-user" id="to-user" autoComplete="to-user" onChange={this.onToUserChange}
-                                placeholder="username without @ or user id"
+                                placeholder="username or user id"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -138,7 +138,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="retweet-of-user" title="Retweets of the specified user" description={DESC.RetweetsOfUserDesc} />
                             </div>
                             <input value={rule.retweetsOfUser} type="text" name="retweet-of-user" id="retweet-of-user" autoComplete="retweet-of-user" onChange={this.onRetweetOfUserChange}
-                                placeholder="username without @ or user id"
+                                placeholder="username or user id"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -179,7 +179,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="context" title="context" description={DESC.ContextDesc} />
                             </div>
                             <input value={rule.context} type="text" name="context" id="context" onChange={this.onContextChange}
-                                placeholder="domain id and/or domain id"
+                                placeholder="domain id and/or domain id, enitity id pair"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 

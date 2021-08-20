@@ -23,3 +23,7 @@ export const ContextDesc = "Matches Tweets with a specific domain id and/or doma
 export const EntityDesc = "Matches Tweets with a specific entity string value.";
 
 export const ConversationIdDesc = "Matches Tweets that share a common conversation ID. A conversation ID is set to the Tweet ID of a Tweet that started a conversation.";
+
+export const LanguageDesc = "Matches Tweets that have been classified by Twitter as being of a particular language (if, and only if, the tweet has been classified). It is important to note that each Tweet is currently only classified as being of one language, so AND’ing together multiple languages will yield no results."
+
+export const SampleDesc = "Returns a random percent sample of Tweets that match a rule rather than the entire set of Tweets. The percent value must be represented by an integer between 1 and 100 (for example, sample:10 will return a random 10% sample).";
