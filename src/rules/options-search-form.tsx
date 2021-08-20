@@ -1,7 +1,8 @@
 import React from "react";
 import Dropdown from "../components/dropdown";
 import Tooltip from "../components/tooltip-wrapper";
-import { RuleOptions, RuleOptionsProperties } from "../models/ruleOptions";
+import { RuleOptionsProperties } from "../models/ruleOptions";
+import { languageEntries } from "../utils/languageUtils";
 import * as DESC from "../utils/stringUtils"
 
 interface OptionsFormProps {
@@ -18,7 +19,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
         super(props);
 
         this.state = {
-            options: props.options || new RuleOptions()
+            options: props.options || {language: "English", sample: 30} as RuleOptionsProperties
         };
 
         this.onIsRetweetChange = this.onIsRetweetChange.bind(this);
@@ -138,11 +139,13 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
                         <legend className="text-base font-medium text-gray-900">By Tweet Content</legend>
                         <div className="flex mt-4">
                             <div className="flex flex-auto justify-between">
-                                <Dropdown id="language" name="language" items={["English", "German", "Chinese"]} onChange={this.onLangChange} defaultValue="English" />
+                                <Dropdown id="language" name="language" items={languageEntries.map(entry => entry.language)} 
+                                    onChange={this.onLangChange} value={options.language} />
                                 <Tooltip id="language" title="Language" description={DESC.LanguageDesc} />
                             </div>
                             <div className="flex flex-auto justify-between">
-                                <Dropdown id="sample" name="sample" items={["10", "20", "30", "40", "50", "60", "70", "80", "90", "100"]} onChange={this.onSampleChange} defaultValue="30" />
+                                <Dropdown id="sample" name="sample" items={["10", "20", "30", "40", "50", "60", "70", "80", "90", "100"]} 
+                                    onChange={this.onSampleChange} value={options.sample?.toLocaleString()} />
                                 <Tooltip id="sample" title="sample" description={DESC.SampleDesc} />
                             </div>
                         </div>
@@ -185,7 +188,6 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
     }
 
     private onLangChange(event: React.ChangeEvent<HTMLSelectElement>): void {
-        console.log(event.target.value)
         this.handleChange({language: event.target.value});
     }
 

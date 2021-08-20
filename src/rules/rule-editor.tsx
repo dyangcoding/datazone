@@ -7,6 +7,7 @@ import { RuleOptionsProperties } from "../models/ruleOptions";
 import { OptionsSearchForm } from "./options-search-form";
 import { RuleSearchForm } from "./rule-search-form";
 import { addRule } from "./actions";
+import { languageMap } from "../utils/languageUtils";
 
 interface StateProps {
     readonly error?: String;
@@ -54,9 +55,9 @@ class RuleEditorComponent extends React.Component<EditorProps, EditorState> {
 
     public render(): React.ReactNode {
         return (
-            <div className="shadow overflow-hidden sm:rounded-md">
+            <div className="max-w-7xl sm:rounded-md">
                 {this.renderErrorMessage()}
-                <div className="px-4 py-5 bg-white sm:p-6">
+                <div className="bg-white sm:p-6 py-6 px-4 sm:px-6 lg:px-8">
                     <form onSubmit={this.onSubmit}>
                         <AccordionItem title="Standard Suche">
                             <RuleSearchForm onChange={this.onRuleChange} />
@@ -107,7 +108,9 @@ class RuleEditorComponent extends React.Component<EditorProps, EditorState> {
     }
 
     private onRuleOptionsChange(options: RuleOptionsProperties): void {
-        this.setState(previousState => ({options: {...previousState.options, ...options}}));
+        const language = options.language ? languageMap().get(options.language) : options.language;
+        const result: RuleOptionsProperties = {...options, language: language};
+        this.setState(previousState => ({options: {...previousState.options, ...result}}));
     }
 
     private onSubmit(event: React.FormEvent<HTMLFormElement>): void {
