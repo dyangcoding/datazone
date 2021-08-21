@@ -291,7 +291,7 @@ export function languageMap(): Map<string, string> {
     if (result.entries.length) {
         return result;
     }
-    languageEntries.map(entry => {
+    languageEntries.forEach(entry => {
         result.set(entry.language, entry.identifier);
     })
     return result;
