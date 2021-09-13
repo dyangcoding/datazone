@@ -19,6 +19,7 @@ export interface UpstreamRuleProperties {
     readonly context?: string;
     readonly entity?: string;
     readonly conversationId?: string;
+    readonly payload?: string;
     readonly options?: RuleOptionsProperties;
 }
 // remove _id which is only required from Mongo Client to fetch Rule Collection
@@ -40,5 +41,6 @@ export class Rule implements RuleProperties {
     public readonly context?: string;
     public readonly entity?: string;
     public readonly conversationId?: string;
+    public readonly payload?: string;
     public readonly options?: RuleOptionsProperties;
 }
