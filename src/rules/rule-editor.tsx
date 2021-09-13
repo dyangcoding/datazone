@@ -9,20 +9,17 @@ import { RuleSearchForm } from "./rule-search-form";
 import { addRule } from "./actions";
 import { languageMap } from "../utils/languageUtils";
 
-interface StateProps {
-    readonly error?: String;
-}
-
 interface DispatchProps {
     readonly onAddRule: (rule: RuleProperties) => Promise<RuleProperties>;
 }
 
-interface EditorProps extends StateProps, DispatchProps {}
+interface EditorProps extends DispatchProps {}
 
 interface EditorState {
     readonly rule: RuleProperties;
     readonly options: RuleOptionsProperties;
     readonly showError: boolean;
+    readonly error?: Error;
     readonly processing: boolean;
 }
 
@@ -46,10 +43,12 @@ class RuleEditorComponent extends React.Component<EditorProps, EditorState> {
     public componentDidUpdate(_: EditorProps, previousState: EditorState): void {
         if (this.state.processing && !previousState.processing) {
             const rule = this.buildRule();
-            this.props.onAddRule(rule).then(
-                () => this.setState({processing: false}),
-                reason => this.setState({showError: false, processing: false})
-            );
+            if (this.props.onAddRule) {
+                this.props.onAddRule(rule).then(
+                    () => this.setState({processing: false}),
+                    reason => this.setState({showError: true, processing: false, error: reason})
+                );
+            }
         }
     }
 
@@ -88,11 +87,11 @@ class RuleEditorComponent extends React.Component<EditorProps, EditorState> {
     }
 
     private renderErrorMessage(): React.ReactNode {
-        const error = this.props.error;
+        const error = this.state.error;
         if (error && this.state.showError) {
             return (
                 <div className="flex justify-between items-center p-2 bg-red-100 text-red-500 py-3 px-3 rounded" onClick={this.onHideErrorClick}>
-                    <div className="lead">{error}</div>
+                    <div className="lead">{error.message}</div>
                     <XIcon className="h-6 w-6" />
                 </div>
             );

@@ -1,5 +1,5 @@
 import { fetchRules } from "../app/mongo-client";
-import { ThunkAction } from "../app/store";
+import { AsyncThunkAction, ThunkAction } from "../app/store";
 import { RuleProperties } from "../models/rule";
 import { RulesClient } from "../services/ajax";
 
@@ -91,22 +91,34 @@ export function loadRules(): ThunkAction<Action> {
     }
 }
 
-export function addRule(rule: RuleProperties): ThunkAction<Action> {
+export function addRule(rule: RuleProperties): AsyncThunkAction<Action, RuleProperties> {
     return dispatch => {
         dispatch({type: ActionType.AddRuleStartedAction});
-        RulesClient.createRule(rule).then(
-            result => dispatch({type: ActionType.AddRuleCompletedAction, rule: result}),
-            reason => dispatch({type: ActionType.AddRuleFailedAction, error: reason})
+        return RulesClient.createRule(rule).then(
+            result => {
+                dispatch({type: ActionType.AddRuleCompletedAction, rule: result});
+                return result;
+            },
+            reason => {
+                dispatch({type: ActionType.AddRuleFailedAction, error: reason})
+                throw reason;
+            }
         );
     }
 }
 
-export function updateRule(newRule: RuleProperties, oldId: number): ThunkAction<Action> {
+export function updateRule(newRule: RuleProperties, oldId: number): AsyncThunkAction<Action, RuleProperties> {
     return dispatch => {
         dispatch({type: ActionType.UpdateRuleStartedAction});
-        RulesClient.updateRule(newRule, oldId).then(
-            result => dispatch({type: ActionType.UpdateRuleCompletedAction, rule: result}),
-            reason => dispatch({type: ActionType.UpdateRuleFailedAction, error: reason})
+        return RulesClient.updateRule(newRule, oldId).then(
+            result => {
+                dispatch({type: ActionType.UpdateRuleCompletedAction, rule: result});
+                return result;
+            },
+            reason => {
+                dispatch({type: ActionType.UpdateRuleFailedAction, error: reason})
+                throw reason;
+            }
         );
     }
 }
