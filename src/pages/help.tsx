@@ -30,7 +30,7 @@ const Header: () => JSX.Element = () => {
 
 const PageInfo: () => JSX.Element = () => {
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col py-6 px-4 sm:px-6 lg:px-8">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -69,7 +69,7 @@ const PageInfo: () => JSX.Element = () => {
 
 const Help: () => JSX.Element = () => {
     return (
-        <div className="max-w-screen-lg mx-auto">
+        <div className="max-w-5xl mx-auto">
             <Header />
             <PageInfo />
         </div>

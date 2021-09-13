@@ -14,7 +14,7 @@ export class TweetListEntry extends React.Component<ListEntryProps> {
 
     public render(): React.ReactNode {
         return (
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="bg-white shadow overflow-hidden sm:rounded-lg cursor-pointer">
                 {this.renderHeader()}
                 {this.renderText()}
                 {this.renderPublicMetrics()}
@@ -109,7 +109,7 @@ export class TweetListEntry extends React.Component<ListEntryProps> {
             return null;
         }
         return (
-            <div className="flex items-center space-x-1">
+            <div className="sm:hidden lg:flex items-center space-x-1">
                 <CalendarIcon className="h-4 w-4" />
                 <span className="text-sm text-gray-900 sm:mt-0">{new Date(createdAt).toLocaleString()}</span>
             </div>
@@ -122,7 +122,7 @@ export class TweetListEntry extends React.Component<ListEntryProps> {
             return null;
         }
         return (
-            <div className="flex items-center space-x-1 cursor-pointer" data-tip="Source">
+            <div className="sm:hidden lg:flex items-center space-x-1 cursor-pointer" data-tip="Source">
                 <DeviceMobileIcon className="h-4 w-4" />
                 <span className="text-sm text-gray-900 sm:mt-0">{source}</span>
             </div>
@@ -269,9 +269,9 @@ export class TweetListEntry extends React.Component<ListEntryProps> {
             return null;
         }
         return (
-            <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <div className="text-sm font-medium text-gray-500">Domain</div>
-                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 space-x-2">
+            <div className="flex items-center px-4 py-2 sm:px-6 space-x-4">
+                <div className="w-1/4 text-sm font-medium text-gray-500">Domain</div>
+                <div className="w-3/4 text-sm text-gray-900 space-x-1">
                     {domains.map(domain => {
                         return (
                             <span key={domain.id} className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
@@ -290,9 +290,9 @@ export class TweetListEntry extends React.Component<ListEntryProps> {
             return null;
         }
         return (
-            <div className="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <div className="text-sm font-medium text-gray-500">Entity</div>
-                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 space-x-2">
+            <div className="flex items-center justify-evenly bg-gray-50 px-4 py-2 sm:px-6 space-x-4">
+                <div className="w-1/4 text-sm font-medium text-gray-500">Entity</div>
+                <div className="w-3/4 text-sm text-gray-900 space-x-1">
                     {entityList.map(entity => {
                         return (
                             <span key={entity.id} className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">

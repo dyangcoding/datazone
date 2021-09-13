@@ -17,10 +17,10 @@ interface DispatchProps {
     readonly onLoad: () => void;
 }
 
-interface TweetProps extends StateProps, DispatchProps {}
+interface TweetListProps extends StateProps, DispatchProps {}
 
-class TweetListComponent extends React.Component<TweetProps> {
-    constructor(props: TweetProps) {
+class TweetListComponent extends React.Component<TweetListProps> {
+    constructor(props: TweetListProps) {
         super(props);
     }
 

@@ -4,7 +4,7 @@ import { SearchIcon } from "@heroicons/react/outline";
 const Header: () => JSX.Element = () => {
     return (
         <header className="bg-white">
-            <div className="flex items-center justify-between max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between py-6 px-4 sm:px-6 lg:px-8">
                 <h1 className="text-3xl font-bold text-gray-900">
                     About
                 </h1>
@@ -29,7 +29,9 @@ const Header: () => JSX.Element = () => {
 
 const About: () => JSX.Element = () => {
     return (
-        <Header />
+        <div className="max-w-5xl mx-auto">
+            <Header />
+        </div>
     );
 }
 

@@ -31,11 +31,11 @@ export class RuleComponent extends React.Component<RuleProps> {
 
     public render(): React.ReactNode {
         return (
-            <Fragment>
+            <div className="max-w-5xl mx-auto">
                 {this.renderHeader()}
                 {this.renderRuleInfo()}
                 {this.renderRules()}
-            </Fragment>
+            </div>
         );
     }
 
@@ -119,7 +119,7 @@ export class RuleComponent extends React.Component<RuleProps> {
                                     </div>
                                     <div className="mt-2">
                                         <p className="text-sm text-gray-500">
-                                            A new Rule would be created and applied to the filtered Stream every time when editing a existing rule.
+                                            The particular Rule would be removed and applied to the filtered Stream every time when deleting a existing rule.
                                             This action cannot be undone.
                                         </p>
                                     </div>
@@ -171,7 +171,7 @@ export class RuleComponent extends React.Component<RuleProps> {
         }
         return (
             <Fragment>
-                <div className="flex justify-between items-center border rounded-md bg-green-500 text-white px-4 py-5">
+                <div className="flex justify-between items-center border rounded-md bg-blue-500 text-white px-4 py-5">
                         <h3 className="text-xl font-bold leading-6 font-medium">Rules</h3>
                         <p className="mt-1 max-w-2xl text-sm border-2 rounded-full py-3 px-6">{this.props.rules.length}</p>
                     </div>

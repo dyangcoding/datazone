@@ -1,7 +1,8 @@
 import React from "react";
-import { SearchIcon } from "@heroicons/react/outline";
+import { MenuAlt3Icon, DownloadIcon } from "@heroicons/react/outline";
 import { RuleEditor } from "../rules/rule-editor";
 import { TweetList } from "../tweets/tweet-list";
+import { Search } from "../tweets/search";
 
 interface TweetProps {}
 
@@ -22,12 +23,23 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
 
     public render(): React.ReactNode {
         return (
-            <React.Fragment>
-                {this.renderHeader()}
-                {this.renderInfo()}
-                {this.renderSearchSection()}
-                {this.renderTweets()}
-            </React.Fragment>
+            <div className="flex relative max-w-6xl mx-auto">
+                <div className="flex flex-col lg:w-2/3 flex-grow mx-auto">
+                    {this.renderHeader()}
+                    {this.renderSearchSection()}
+                    {this.renderTweets()}
+                </div>
+                <div className="sm:hidden lg:flex lg:flex-col lg:w-96 space-y-6 py-7 px-4 lg:px-8">
+                    <Search />
+                </div>
+                <div className="mb-4 absolute bottom-0 right-10">
+                    <button
+                        className="text-white px-4 py-4 w-auto bg-green-600 rounded-full hover:bg-green-700 active:shadow-lg 
+                            shadow transition ease-in duration-200 focus:outline-none">
+                        <DownloadIcon className="w-6 h-6" />
+                    </button>
+                </div>
+            </div>
         );
     }
 
@@ -38,16 +50,14 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
                     <h1 className="text-3xl font-bold text-gray-900">
                         Tweets
                     </h1>
-
                     <div className="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
                     <button type="button" onClick={this.onToggleEditor}
                         className="-mr-1 flex p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2">
                         <span className="sr-only">Search</span>
-                        <SearchIcon className="h-6 w-6" aria-hidden="true" />
+                        <MenuAlt3Icon className="h-6 w-6" aria-hidden="true" />
                     </button>
                     </div>
                 </div>
-
                 <div className="hidden sm:block" aria-hidden="true">
                     <div className="py-5">
                     <div className="border-t border-gray-200"></div>
