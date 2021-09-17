@@ -32,7 +32,7 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
                 <div className="sm:hidden lg:flex lg:flex-col lg:w-96 space-y-6 py-7 px-4 lg:px-8">
                     <Search />
                 </div>
-                <div className="mb-4 absolute bottom-0 right-10">
+                <div className="fixed bottom-0 right-10 mb-4">
                     <button
                         className="text-white px-4 py-4 w-auto bg-green-600 rounded-full hover:bg-green-700 active:shadow-lg 
                             shadow transition ease-in duration-200 focus:outline-none">
