@@ -10,7 +10,7 @@ import { tweetCollection } from "./mongo-client";
 import { toTweetProperties, UpstreamTweetProperties } from "../models/tweet";
 
 export type ThunkDispatch<A extends Action=Action> = ReduxThunkDispatch<AppState, never, A>
-export type Status = "idle" | "loading" | "inserting" | "completed" | "failed";
+export type Status = "idle" | "loading" | "inserting" | "deleting" | "completed" | "failed";
 
 export type AppAction = TweetsAction | RulesAction
 

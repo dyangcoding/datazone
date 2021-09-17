@@ -10,7 +10,7 @@ interface StateProps {
 
 interface DispatchProps {
     readonly onEditRule: (newRule: RuleProperties, oldId: number) => Promise<RuleProperties>;
-    readonly onDeleteRule: (ruleId: number) => Promise<void>;
+    readonly onDeleteRule: (ruleId: string) => Promise<void>;
 }
 
 interface EntryProps extends StateProps, DispatchProps {}
@@ -47,12 +47,14 @@ class RuleEntryComponent extends React.Component<EntryProps, EntryState> {
                     </div>
                     <div className="flex">
                         <div className="px-2 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button className="rounded-md border border-blue-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-blue-700 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <button className="rounded-md border border-blue-300 shadow-sm px-4 py-2 bg-white text-base 
+                                font-medium text-blue-700 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                 Edit
                             </button>
                         </div>
                         <div className="px-2 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button className="rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            <button onClick={this.onDeleteRuleClick} className="rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base 
+                                font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                 Delete
                             </button>
                         </div>
@@ -66,9 +68,10 @@ class RuleEntryComponent extends React.Component<EntryProps, EntryState> {
 
     }
 
-    private onDeleteRuleClick(ruleId: number | undefined): void {
-        if (ruleId) {
-            this.props.onDeleteRule(ruleId)
+    private onDeleteRuleClick(): void {
+        const id = this.props.rule.id;
+        if (id) {
+            this.props.onDeleteRule(id);
         }
     }
 }
@@ -76,7 +79,7 @@ class RuleEntryComponent extends React.Component<EntryProps, EntryState> {
 function mapDispatchToProps(dispatch: any): DispatchProps {
     return {
         onEditRule: (rule: RuleProperties, id: number) => dispatch(updateRule(rule, id)),
-        onDeleteRule: (id: number) => dispatch(deleteRule(id))
+        onDeleteRule: (id: string) => dispatch(deleteRule(id))
     };
 }
 

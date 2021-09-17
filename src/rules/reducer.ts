@@ -25,6 +25,16 @@ export function ruleReducer(state: RuleState = initialState, action: Action): Ru
         case ActionType.LoadRulesFailedAction: {
             return {...state, loading: "failed", error: action.error.message};
         }
+        case ActionType.DeleteRuleStartedAction: {
+            return {...state, loading: "deleting"};
+        }
+        case ActionType.UpdateRuleCompletedAction: {
+            return {...state, loading: "completed"};
+        }
+        case ActionType.DeletedRuleFailedAction: {
+            console.log(action.error.message)
+            return {...state, loading: "failed", error: action.error.message};
+        }
         default:
             return state;
     }

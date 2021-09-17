@@ -123,12 +123,18 @@ export function updateRule(newRule: RuleProperties, oldId: number): AsyncThunkAc
     }
 }
 
-export function deleteRule(ruleId: number): ThunkAction<Action> {
+export function deleteRule(id: string): AsyncThunkAction<Action> {
     return dispatch => {
         dispatch({type: ActionType.DeleteRuleStartedAction});
-        RulesClient.deleteRule(ruleId).then(
-            () => dispatch({type: ActionType.DeleteRuleCompletedAction}),
-            reason => dispatch({type: ActionType.DeletedRuleFailedAction, error: reason})
+        return RulesClient.deleteRule(id).then(
+            () => {
+                dispatch({type: ActionType.DeleteRuleCompletedAction});
+                return;
+            },
+            reason => {
+                dispatch({type: ActionType.DeletedRuleFailedAction, error: reason});
+                throw reason;
+            }
         );
     }
 }

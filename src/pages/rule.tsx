@@ -1,6 +1,6 @@
 import React from "react";
 import { Fragment } from "react";
-import { SearchIcon, ChatAltIcon, EmojiSadIcon, AdjustmentsIcon, TrashIcon } from "@heroicons/react/outline";
+import { SearchIcon, ChatAltIcon, EmojiSadIcon, AdjustmentsIcon, TrashIcon, XIcon } from "@heroicons/react/outline";
 import { RuleProperties } from "../models/rule";
 import { connect } from "react-redux";
 import { RuleEntry } from "../rules/rule-list-entry";
@@ -20,9 +20,19 @@ interface DispatchProps {
 
 interface RuleProps extends StateProps, DispatchProps {}
 
-export class RuleComponent extends React.Component<RuleProps> {
+interface RuleState {
+    readonly showError: boolean;
+}
+
+export class RuleComponent extends React.Component<RuleProps, RuleState> {
     constructor(props: RuleProps) {
         super(props);
+
+        this.state = {
+            showError: true,
+        }
+
+        this.onHideErrorClick = this.onHideErrorClick.bind(this);
     }
 
     public componentDidMount(): void {
@@ -147,24 +157,10 @@ export class RuleComponent extends React.Component<RuleProps> {
         );
     }
 
-    private renderEditAction(rule: RuleProperties): React.ReactNode {
-        return (
-            <div className="px-2 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button className="rounded-md border border-blue-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-blue-700 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                    Edit
-                </button>
-            </div>
-        );
-    }
-
     private renderRules(): React.ReactNode {
-        const {rules, error, isLoading} = this.props;
+        const {rules, isLoading} = this.props;
         if (isLoading === "loading") {
             return <Spinner />;
-        }
-        if (error) {
-            return this.renderError();
         }
         if (!rules.length) {
             return this.renderPageInfo();
@@ -172,9 +168,10 @@ export class RuleComponent extends React.Component<RuleProps> {
         return (
             <Fragment>
                 <div className="flex justify-between items-center border rounded-md bg-blue-500 text-white px-4 py-5">
-                        <h3 className="text-xl font-bold leading-6 font-medium">Rules</h3>
-                        <p className="mt-1 max-w-2xl text-sm border-2 rounded-full py-3 px-6">{this.props.rules.length}</p>
-                    </div>
+                    <h3 className="text-xl font-bold leading-6 font-medium">Rules</h3>
+                    <p className="mt-1 max-w-2xl text-sm border-2 rounded-full py-3 px-6">{this.props.rules.length}</p>
+                </div>
+                {this.renderErrorMessage()}
                 <div className="flex flex-col bg-white divide-y divide-gray-200 my-4">
                     {rules.map(rule => (
                         <RuleEntry key={rule.id} rule={rule} />
@@ -182,6 +179,22 @@ export class RuleComponent extends React.Component<RuleProps> {
                 </div>
             </Fragment>
         );
+    }
+
+    private renderErrorMessage(): React.ReactNode {
+        const error = this.props.error;
+        if (error && this.state.showError) {
+            return (
+                <div className="flex justify-between items-center p-2 bg-red-100 text-red-500 py-3 px-3 rounded my-4" onClick={this.onHideErrorClick}>
+                    <div className="lead">{error}</div>
+                    <XIcon className="h-6 w-6" />
+                </div>
+            );
+        }
+    }
+
+    private onHideErrorClick(): void {
+        this.setState(previousState => ({showError: !previousState.showError}));
     }
 }
 
