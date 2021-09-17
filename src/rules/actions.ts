@@ -1,6 +1,6 @@
 import { fetchRules } from "../app/mongo-client";
 import { AsyncThunkAction, ThunkAction } from "../app/store";
-import { RuleProperties } from "../models/rule";
+import { RuleProperties, UpstreamRuleProperties } from "../models/rule";
 import { RulesClient } from "../services/ajax";
 
 export enum ActionType {
@@ -18,13 +18,16 @@ export enum ActionType {
 
     DeleteRuleStartedAction = "DELETE_RULE_STARTED",
     DeleteRuleCompletedAction = "DELETE_RULE_COMPLETED",
-    DeletedRuleFailedAction = "DELETE_RULE_FAILED"
+    DeletedRuleFailedAction = "DELETE_RULE_FAILED",
+
+    RuleDeletedCompletedAction = "RULE_DELETED_COMPLETED"
 }
 
 export type Action = LoadRulesStartedAction | LoadRulesCompletedAction | LoadRulesFailedAction 
                 | AddRuleStartedAction | AddRuleCompletedAction | AddRuleFailedAction
                 | UpdateRuleStartedAction | UpdateRuleCompletedAction | UpdateRuleFailedAction 
-                | DeleteRuleStartedAction | DeleteRuleCompletedAction | DeleteRuleFailedAction;
+                | DeleteRuleStartedAction | DeleteRuleCompletedAction | DeleteRuleFailedAction
+                | RuleDeletedCompletedAction;
 
 export interface LoadRulesStartedAction {
     readonly type: ActionType.LoadRulesStartedAction;
@@ -32,7 +35,7 @@ export interface LoadRulesStartedAction {
 
 export interface LoadRulesCompletedAction {
     readonly type: ActionType.LoadRulesCompletedAction;
-    readonly rules: ReadonlyArray<RuleProperties>;
+    readonly rules: ReadonlyArray<UpstreamRuleProperties>;
 }
 
 export interface LoadRulesFailedAction {
@@ -79,6 +82,11 @@ export interface DeleteRuleCompletedAction {
 export interface DeleteRuleFailedAction {
     readonly type: ActionType.DeletedRuleFailedAction;
     readonly error: Error;
+}
+
+export interface RuleDeletedCompletedAction {
+    readonly type: ActionType.RuleDeletedCompletedAction;
+    readonly ruleId: string;
 }
 
 export function loadRules(): ThunkAction<Action> {

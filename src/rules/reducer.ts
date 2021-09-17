@@ -1,15 +1,15 @@
-import { RuleProperties } from "../models/rule";
+import { UpstreamRuleProperties } from "../models/rule";
 import { Status } from "../app/store";
 import { Action, ActionType } from "./actions";
 
 interface RuleState {
-    readonly value: ReadonlyArray<RuleProperties>,
+    readonly value: ReadonlyArray<UpstreamRuleProperties>,
     readonly loading: Status,
     readonly error: string | undefined,
 };
 
 const initialState: RuleState = {
-    value: [] as RuleProperties[],
+    value: [] as UpstreamRuleProperties[],
     loading: "idle",
     error: undefined
 };
@@ -32,8 +32,11 @@ export function ruleReducer(state: RuleState = initialState, action: Action): Ru
             return {...state, loading: "completed"};
         }
         case ActionType.DeletedRuleFailedAction: {
-            console.log(action.error.message)
             return {...state, loading: "failed", error: action.error.message};
+        }
+        case ActionType.RuleDeletedCompletedAction: {
+            const result = state.value.filter(rule => rule._id !== action.ruleId)
+            return {...state, value: result}
         }
         default:
             return state;

@@ -1,5 +1,5 @@
 import * as Realm from "realm-web";
-import { RuleProperties, UpstreamRuleProperties } from "../models/rule";
+import { UpstreamRuleProperties } from "../models/rule";
 import { TweetProperties, UpstreamTweetProperties } from "../models/tweet";
 
 /*
@@ -28,13 +28,28 @@ async function getMongoDB() {
     return currentUser.mongoClient("mongodb-atlas");
 }
 
-export async function fetchRules() {
+export async function ruleCollection() {
     const mongoDb = await getMongoDB();
     return mongoDb
         .db("dataZone")
-        .collection<UpstreamRuleProperties>("rules")
-        .aggregate(pipeline)
-        .then(rules => rules as ReadonlyArray<RuleProperties>);
+        .collection<UpstreamRuleProperties>("rules");
+}
+
+/*
+    keep the "_id" field that was generated from MongoDb, because in order to 
+    delete specific Rule object from local Store we only have access to the _id
+    which is deliveried from the Delete Change Event.
+*/
+export async function fetchRules() {
+    return ruleCollection().then(async collection => {
+        const rules = await collection.find();
+        return rules.map(rule => 
+            {
+                const temp = {"_id": rule._id.toString()}
+                return {...rule, ...temp}
+            }
+        )
+    });
 }
 
 export async function tweetCollection() {
