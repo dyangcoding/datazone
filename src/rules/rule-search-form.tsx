@@ -213,7 +213,6 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
     }
 
     private onEmojiChange(event: React.ChangeEvent<HTMLInputElement>): void {
-        console.log(event.target.value)
         this.handleChange({emoji: event.target.value});
     }
 

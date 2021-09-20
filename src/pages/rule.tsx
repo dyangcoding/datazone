@@ -1,12 +1,13 @@
 import React from "react";
 import { Fragment } from "react";
-import { SearchIcon, ChatAltIcon, EmojiSadIcon, AdjustmentsIcon, TrashIcon, XIcon } from "@heroicons/react/outline";
+import { SearchIcon, ChatAltIcon, EmojiSadIcon, AdjustmentsIcon, TrashIcon, XIcon, DownloadIcon } from "@heroicons/react/outline";
 import { RuleProperties } from "../models/rule";
 import { connect } from "react-redux";
 import { RuleEntry } from "../rules/rule-list-entry";
 import { AppState } from "../app/store";
 import Spinner from "../components/spinner";
 import { loadRules } from "../rules/actions";
+import { downloads } from "../utils/download";
 
 interface StateProps {
     readonly rules: ReadonlyArray<RuleProperties>;
@@ -33,6 +34,7 @@ export class RuleComponent extends React.Component<RuleProps, RuleState> {
         }
 
         this.onHideErrorClick = this.onHideErrorClick.bind(this);
+        this.onDownloadClick = this.onDownloadClick.bind(this);
     }
 
     public componentDidMount(): void {
@@ -41,10 +43,11 @@ export class RuleComponent extends React.Component<RuleProps, RuleState> {
 
     public render(): React.ReactNode {
         return (
-            <div className="max-w-5xl mx-auto">
+            <div className="max-w-4xl mx-auto">
                 {this.renderHeader()}
                 {this.renderRuleInfo()}
                 {this.renderRules()}
+                {this.renderActionButton()}
             </div>
         );
     }
@@ -181,6 +184,18 @@ export class RuleComponent extends React.Component<RuleProps, RuleState> {
         );
     }
 
+    private renderActionButton(): React.ReactNode {
+        return (
+            <div className="fixed bottom-0 right-10 mb-4">
+                <button onClick={this.onDownloadClick}
+                    className="text-white px-4 py-4 w-auto bg-green-600 rounded-full hover:bg-green-700 active:shadow-lg 
+                        shadow transition ease-in duration-200 focus:outline-none">
+                    <DownloadIcon className="w-6 h-6" />
+                </button>
+            </div>
+        );
+    }
+
     private renderErrorMessage(): React.ReactNode {
         const error = this.props.error;
         if (error && this.state.showError) {
@@ -195,6 +210,14 @@ export class RuleComponent extends React.Component<RuleProps, RuleState> {
 
     private onHideErrorClick(): void {
         this.setState(previousState => ({showError: !previousState.showError}));
+    }
+
+    private onDownloadClick(): void {
+        const rules = this.props.rules;
+        if (!rules || !rules.length) {
+            return;
+        }
+        downloads(rules, "rules.json");
     }
 }
 

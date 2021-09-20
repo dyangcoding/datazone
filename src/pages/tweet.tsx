@@ -2,15 +2,20 @@ import React from "react";
 import { MenuAlt3Icon, DownloadIcon } from "@heroicons/react/outline";
 import { RuleEditor } from "../rules/rule-editor";
 import { TweetList } from "../tweets/tweet-list";
-import { Search } from "../tweets/search";
+import { TweetProperties } from "../models/tweet";
+import { AppState } from "../app/store";
+import { connect } from "react-redux";
+import { downloads } from "../utils/download";
 
-interface TweetProps {}
+interface TweetProps {
+    readonly tweets: ReadonlyArray<TweetProperties>;
+}
 
 interface TweetState {
     readonly toggleEditor: Boolean;
 }
 
-export class Tweets extends React.Component<TweetProps, TweetState> {
+export class TweetsComponent extends React.Component<TweetProps, TweetState> {
     constructor(props: TweetProps) {
         super(props);
 
@@ -19,21 +24,19 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
         };
         this.onToggleEditor = this.onToggleEditor.bind(this);
         this.renderSearchSection = this.renderSearchSection.bind(this);
+        this.onDownloadClick = this.onDownloadClick.bind(this);
     }
 
     public render(): React.ReactNode {
         return (
-            <div className="flex relative max-w-6xl mx-auto">
+            <div className="flex max-w-4xl mx-auto overflow-y-auto">
                 <div className="flex flex-col lg:w-2/3 flex-grow mx-auto">
                     {this.renderHeader()}
                     {this.renderSearchSection()}
                     {this.renderTweets()}
                 </div>
-                <div className="sm:hidden lg:flex lg:flex-col lg:w-96 space-y-6 py-7 px-4 lg:px-8">
-                    <Search />
-                </div>
                 <div className="fixed bottom-0 right-10 mb-4">
-                    <button
+                    <button onClick={this.onDownloadClick}
                         className="text-white px-4 py-4 w-auto bg-green-600 rounded-full hover:bg-green-700 active:shadow-lg 
                             shadow transition ease-in duration-200 focus:outline-none">
                         <DownloadIcon className="w-6 h-6" />
@@ -51,33 +54,19 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
                         Tweets
                     </h1>
                     <div className="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
-                    <button type="button" onClick={this.onToggleEditor}
-                        className="-mr-1 flex p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2">
-                        <span className="sr-only">Search</span>
-                        <MenuAlt3Icon className="h-6 w-6" aria-hidden="true" />
-                    </button>
+                        <button type="button" onClick={this.onToggleEditor}
+                            className="-mr-1 flex p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2">
+                            <span className="sr-only">Search</span>
+                            <MenuAlt3Icon className="h-6 w-6" aria-hidden="true" />
+                        </button>
                     </div>
                 </div>
                 <div className="hidden sm:block" aria-hidden="true">
                     <div className="py-5">
-                    <div className="border-t border-gray-200"></div>
+                        <div className="border-t border-gray-200"></div>
                     </div>
                 </div>
             </header>
-        );
-    }
-
-    private renderInfo(): React.ReactNode {
-        return (
-            <div className="lg:text-center py-6">
-                <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">Data Zone</h2>
-                <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    A better way to acquire real-time data
-                </p>
-                <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-                    Data Zone overcomes the struggle on how to effectively acquire twitter data for your next research project.
-                </p>
-            </div>
         );
     }
 
@@ -95,4 +84,20 @@ export class Tweets extends React.Component<TweetProps, TweetState> {
     private onToggleEditor(): void {
         this.setState(state => ({toggleEditor: !state.toggleEditor}));
     }
+
+    private onDownloadClick(): void {
+        const tweets = this.props.tweets;
+        if (!tweets || !tweets.length) {
+            return;
+        }
+        downloads(tweets, "tweets.json");
+    }
 }
+
+function mapStateToProps(state: AppState): TweetProps {
+    return {
+        tweets: state.tweets.value,
+    };
+}
+
+export const Tweets = connect(mapStateToProps, null)(TweetsComponent)
