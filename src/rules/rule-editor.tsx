@@ -7,13 +7,17 @@ import { RuleOptionsProperties } from "../models/ruleOptions";
 import { OptionsSearchForm } from "./options-search-form";
 import { RuleSearchForm } from "./rule-search-form";
 import { addRule } from "./actions";
-import { languageMap } from "../utils/languageUtils";
+
+interface StateProps {
+    readonly rule?: RuleProperties;
+    readonly toggleEditor?: boolean | undefined;
+}
 
 interface DispatchProps {
     readonly onAddRule: (rule: RuleProperties) => Promise<RuleProperties>;
 }
 
-interface EditorProps extends DispatchProps {}
+interface EditorProps extends StateProps, DispatchProps {}
 
 interface EditorState {
     readonly rule: RuleProperties;
@@ -28,8 +32,8 @@ class RuleEditorComponent extends React.Component<EditorProps, EditorState> {
         super(props)
 
         this.state = {
-            rule: new Rule(),
-            options: {},
+            rule: this.props.rule ? this.props.rule : new Rule(),
+            options: this.props.rule && this.props.rule.options ? this.props.rule.options : {},
             showError: true,
             processing: false,
         }
@@ -43,6 +47,7 @@ class RuleEditorComponent extends React.Component<EditorProps, EditorState> {
     public componentDidUpdate(_: EditorProps, previousState: EditorState): void {
         if (this.state.processing && !previousState.processing) {
             const rule = this.buildRule();
+            console.log(rule);
             if (this.props.onAddRule) {
                 this.props.onAddRule(rule).then(
                     () => this.setState({processing: false}),
@@ -54,26 +59,24 @@ class RuleEditorComponent extends React.Component<EditorProps, EditorState> {
 
     public render(): React.ReactNode {
         return (
-            <div className="max-w-7xl sm:rounded-md">
-                {this.renderErrorMessage()}
-                <div className="bg-white sm:p-6 py-6 px-4 sm:px-6 lg:px-8">
-                    <form onSubmit={this.onSubmit}>
-                        <AccordionItem title="Standard Suche">
-                            <RuleSearchForm onChange={this.onRuleChange} />
-                        </AccordionItem>
-                        <AccordionItem title="Optionale Suche">
-                            <OptionsSearchForm onChange={this.onRuleOptionsChange} />
-                        </AccordionItem>
-                        <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                            <button type="submit"
-                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm 
-                                    text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none 
-                                    focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                Send
-                            </button>
-                        </div>
-                    </form>
-                </div>
+            <div className="max-w-7xl border rounded-md">
+                <form className="bg-white sm:p-6 py-6 px-4" onSubmit={this.onSubmit}>
+                    {this.renderErrorMessage()}
+                    <AccordionItem title="Standard Search" isToggled={this.props.toggleEditor}>
+                        <RuleSearchForm rule={this.state.rule} onChange={this.onRuleChange} />
+                    </AccordionItem>
+                    <AccordionItem title="Optional Search" isToggled={this.props.toggleEditor}>
+                        <OptionsSearchForm options={this.state.options} onChange={this.onRuleOptionsChange} />
+                    </AccordionItem>
+                    <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                        <button type="submit"
+                            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm 
+                                text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none 
+                                focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Send
+                        </button>
+                    </div>
+                </form>
             </div>
         );
     }
@@ -107,9 +110,7 @@ class RuleEditorComponent extends React.Component<EditorProps, EditorState> {
     }
 
     private onRuleOptionsChange(options: RuleOptionsProperties): void {
-        const language = options.language ? languageMap().get(options.language) : options.language;
-        const result: RuleOptionsProperties = {...options, language: language};
-        this.setState(previousState => ({options: {...previousState.options, ...result}}));
+        this.setState(previousState => ({options: {...previousState.options, ...options}}));
     }
 
     private onSubmit(event: React.FormEvent<HTMLFormElement>): void {

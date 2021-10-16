@@ -13,13 +13,13 @@ const Dropdown = ({ id, name, items, onChange, value } :
     }
     return (
         <div className="flex flex-col flex-auto">
-            <label htmlFor={id} className="block text-sm font-medium text-gray-700 uppercase">
+            <label htmlFor={id} className="block text-sm font-medium text-gray-700">
                 {name}
             </label>
             <select id={id} name={name} autoComplete={name} onChange={onChange} value={value}
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 {items.map((item, index) => {
-                    return (<option key={index}>{item}</option>);
+                    return (<option key={index} value={item}>{item}</option>);
                 })}
             </select>
         </div>

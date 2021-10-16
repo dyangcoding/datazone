@@ -1,9 +1,8 @@
 import React from "react";
 import Dropdown from "../components/dropdown";
-import Tooltip from "../components/tooltip-wrapper";
 import { RuleOptionsProperties } from "../models/ruleOptions";
-import { languageEntries } from "../utils/languageUtils";
-import * as DESC from "../utils/stringUtils"
+import optionalMap, { optionalEntries } from "../utils/dropdownUtils";
+import { languageEntries, languageMap } from "../utils/languageUtils";
 
 interface OptionsFormProps {
     readonly options?: RuleOptionsProperties;
@@ -30,7 +29,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
         this.onHasMediaChange = this.onHasMediaChange.bind(this);
         this.onHasImagesChange = this.onHasImagesChange.bind(this);
         this.onHasVideosChange = this.onHasVideosChange.bind(this);
-        this.onLangChange = this.onLangChange.bind(this);
+        this.onLanguageChange = this.onLanguageChange.bind(this);
         this.onSampleChange = this.onSampleChange.bind(this);
 
         this.handleChange = this.handleChange.bind(this);
@@ -41,154 +40,107 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
         return (
             <div className="mt-5 md:mt-0 md:col-span-2">
                 <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
-                    <fieldset>
+                    <div>
                         <legend className="text-base font-medium text-gray-900">By Tweet Type</legend>
-                        <div className="flex mt-4 text-sm">
-                            <div className="flex items-start h-5">
-                                <input checked={options.isRetweet} id="is-retweet" name="is-retweet" type="checkbox" onChange={this.onIsRetweetChange}
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                            </div>
-                            <div className="ml-3">
-                                <label htmlFor="is-retweet" className="font-medium text-gray-700">
-                                    Is Retweet
-                                </label>
-                                <p className="text-gray-500">Matches on Retweets that match the rest of the specified rule.</p>
-                            </div>
-                            <div className="flex items-start h-5">
-                                <input checked={options.isVerified} id="is-verified" name="is-verified" type="checkbox" onChange={this.onIsVerifiedChange}
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                            </div>
-                            <div className="ml-3">
-                                <label htmlFor="is-verified" className="font-medium text-gray-700">
-                                    Is Verified
-                                </label>
-                                <p className="text-gray-500">Deliver only Tweets whose authors are verified by Twitter.</p>
-                            </div>
-                            <div className="flex items-start h-5">
-                                <input checked={options.isReply} id="is-reply" name="is-reply" type="checkbox" onChange={this.onIsReplyChange}
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                            </div>
-                            <div className="ml-3">
-                                <label htmlFor="is-reply" className="font-medium text-gray-700">
-                                    Is Reply
-                                </label>
-                                <p className="text-gray-500">Deliver only explicit replies that match a rule.</p>
-                            </div>
+                        <div className="flex mt-4 text-sm space-x-2">
+                            <Dropdown id="is-retweet" name="Is Retweet" value={this.getInitialValue(options.isRetweet)} 
+                                items={optionalEntries} onChange={this.onIsRetweetChange} />
+                            <Dropdown id="is-verified" name="Is Verified" value={this.getInitialValue(options.isVerified)} 
+                                items={optionalEntries} onChange={this.onIsVerifiedChange} />
+                            <Dropdown id="is-reply" name="Is Reply" value={this.getInitialValue(options.isReply)} 
+                                items={optionalEntries} onChange={this.onIsReplyChange} />
                         </div>
-                    </fieldset>
-                    <fieldset>
+                    </div>
+                    <div>
                         <legend className="text-base font-medium text-gray-900">By Tweet Content</legend>
-                        <div className="flex mt-4 text-sm">
-                            <div className="flex items-start h-5">
-                                <input checked={options.hasHashtags} id="has-hashtags" name="has-hashtags" type="checkbox" onChange={this.onHasHashtagsChange}
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                            </div>
-                            <div className="ml-3">
-                                <label htmlFor="has-hashtags" className="font-medium text-gray-700">
-                                    Has Hashtags
-                                </label>
-                                <p className="text-gray-500">Matches Tweets that contain at least one hashtag.</p>
-                            </div>
-                            <div className="flex items-start h-5">
-                                <input checked={options.hasImages} id="has-images" name="has-images" type="checkbox" onChange={this.onHasImagesChange}
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                            </div>
-                            <div className="ml-3">
-                                <label htmlFor="has-images" className="font-medium text-gray-700">
-                                    Has Images
-                                </label>
-                                <p className="text-gray-500">Matches Tweets that contain a recognized URL to an image.</p>
-                            </div>
-                            <div className="flex items-start h-5">
-                                <input checked={options.hasLinks} id="has-links" name="has-links" type="checkbox" onChange={this.onHasLinksChange}
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                            </div>
-                            <div className="ml-3">
-                                <label htmlFor="has-links" className="font-medium text-gray-700">
-                                    has Links
-                                </label>
-                                <p className="text-gray-500">matches Tweets which contain links and media in the Tweet body.</p>
-                            </div>
+                        <div className="flex mt-4 text-sm space-x-2">
+                            <Dropdown id="has-hashtags" name="Has Hashtags" value={this.getInitialValue(options.hasHashtags)} 
+                                items={optionalEntries} onChange={this.onHasHashtagsChange} />
+                            <Dropdown id="has-images" name="Has Images" value={this.getInitialValue(options.hasImages)}
+                                items={optionalEntries} onChange={this.onHasImagesChange} />
+                            <Dropdown id="has-links" name="Has Links" value={this.getInitialValue(options.hasLinks)}
+                                items={optionalEntries} onChange={this.onHasLinksChange} />
                         </div>
-                    </fieldset>
-                    <fieldset>
-                        <div className="flex space-x-4">
-                            <div className="flex items-start h-5">
-                                <input checked={options.hasMedia} id="has-media" name="has-media" type="checkbox" onChange={this.onHasMediaChange}
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                            </div>
-                            <div className="text-sm">
-                                <label htmlFor="has-media" className="font-medium text-gray-700">
-                                    Has Media
-                                </label>
-                                <p className="text-gray-500">Matches Tweets that contain a media object, such as a photo, GIF, or video, as determined by Twitter.</p>
-                            </div>
-                            <div className="flex items-start h-5">
-                                <input checked={options.hasVideos} id="has-videos" name="has-videos" type="checkbox" onChange={this.onHasVideosChange}
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"/>
-                            </div>
-                            <div className="text-sm">
-                                <label htmlFor="has-videos" className="font-medium text-gray-700">
-                                    Has Videos
-                                </label>
-                                <p className="text-gray-500">Matches Tweets that contain native Twitter videos, uploaded directly to Twitter.</p>
-                            </div>
+                    </div>
+                    <div>
+                        <div className="flex mt-4 text-sm space-x-2">
+                            <Dropdown id="has-media" name="Has Media" value={this.getInitialValue(options.hasMedia)}
+                                items={optionalEntries} onChange={this.onHasMediaChange} />
+                            <Dropdown id="has-videos" name="Has Videos" value={this.getInitialValue(options.hasVideos)}
+                                items={optionalEntries} onChange={this.onHasVideosChange} />
                         </div>
-                    </fieldset>
-                    <fieldset>
+                    </div>
+                    <div>
                         <legend className="text-base font-medium text-gray-900">By Tweet Content</legend>
-                        <div className="flex mt-4">
-                            <div className="flex flex-auto justify-between">
-                                <Dropdown id="language" name="language" items={languageEntries.map(entry => entry.language)} 
-                                    onChange={this.onLangChange} value={options.language} />
-                                <Tooltip id="language" title="Language" description={DESC.LanguageDesc} />
+                        <div className="flex mt-4 space-x-4">
+                            <div className="flex flex-1 justify-between">
+                                <Dropdown id="language" name="Language" items={languageEntries.map(entry => entry.language)} 
+                                    onChange={this.onLanguageChange} value={this.getInitialLanguage(options.language)} />
                             </div>
-                            <div className="flex flex-auto justify-between">
-                                <Dropdown id="sample" name="sample" items={["10", "20", "30", "40", "50", "60", "70", "80", "90", "100"]} 
+                            <div className="flex flex-1 justify-between">
+                                <Dropdown id="sample" name="Sample" items={["10", "20", "30", "40", "50", "60", "70", "80", "90", "100"]} 
                                     onChange={this.onSampleChange} value={options.sample?.toLocaleString()} />
-                                <Tooltip id="sample" title="sample" description={DESC.SampleDesc} />
                             </div>
                         </div>
-                    </fieldset>
+                    </div>
                 </div>
             </div>
         );
     }
 
-    private onIsRetweetChange(event: React.ChangeEvent<HTMLInputElement>): void {
-        this.handleChange({isRetweet: event.target.checked ? event.target.checked : undefined});
+    private getInitialValue(selected: boolean | undefined): string {
+        if (selected === undefined) {
+            return "Unset";
+        } else if (selected) {
+            return "Yes";
+        } else {
+            return "No";
+        }
     }
 
-    private onIsVerifiedChange(event: React.ChangeEvent<HTMLInputElement>): void {
-        this.handleChange({isVerified: event.target.checked ? event.target.checked : undefined});
+    private getInitialLanguage(language: string | undefined): string {
+        for (const entry of languageEntries) {
+            if (language === entry.identifier) {
+                return entry.language;
+            }
+        }
+        return "";
     }
 
-    private onIsReplyChange(event: React.ChangeEvent<HTMLInputElement>): void {
-        this.handleChange({isReply: event.target.checked ? event.target.checked : undefined});
+    private onIsRetweetChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+        this.handleChange({isRetweet: optionalMap.get(event.target.value)});
     }
 
-    private onHasHashtagsChange(event: React.ChangeEvent<HTMLInputElement>): void {
-        this.handleChange({hasHashtags: event.target.checked ? event.target.checked : undefined});
+    private onIsVerifiedChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+        this.handleChange({isVerified: optionalMap.get(event.target.value)});
     }
 
-    private onHasLinksChange(event: React.ChangeEvent<HTMLInputElement>): void {
-        this.handleChange({hasLinks: event.target.checked ? event.target.checked : undefined});
+    private onIsReplyChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+        this.handleChange({isReply: optionalMap.get(event.target.value)});
     }
 
-    private onHasMediaChange(event: React.ChangeEvent<HTMLInputElement>): void {
-        this.handleChange({hasMedia: event.target.checked ? event.target.checked : undefined});
+    private onHasHashtagsChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+        this.handleChange({hasHashtags: optionalMap.get(event.target.value)});
     }
 
-    private onHasImagesChange(event: React.ChangeEvent<HTMLInputElement>): void {
-        this.handleChange({hasImages: event.target.checked ? event.target.checked : undefined});
+    private onHasLinksChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+        this.handleChange({hasLinks: optionalMap.get(event.target.value)});
     }
 
-    private onHasVideosChange(event: React.ChangeEvent<HTMLInputElement>): void {
-        this.handleChange({hasVideos: event.target.checked ? event.target.checked : undefined});
+    private onHasMediaChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+        this.handleChange({hasMedia: optionalMap.get(event.target.value)});
     }
 
-    private onLangChange(event: React.ChangeEvent<HTMLSelectElement>): void {
-        this.handleChange({language: event.target.value});
+    private onHasImagesChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+        this.handleChange({hasImages: optionalMap.get(event.target.value)});
+    }
+
+    private onHasVideosChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+        this.handleChange({hasVideos: optionalMap.get(event.target.value)});
+    }
+
+    private onLanguageChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+        this.handleChange({language: languageMap().get(event.target.value)});
     }
 
     private onSampleChange(event: React.ChangeEvent<HTMLSelectElement>): void {
