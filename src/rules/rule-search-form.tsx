@@ -51,8 +51,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                     <Tooltip id="keyword" title="keywords" description={DESC.KeywordDesc} />
                                 </div>
                             </div>
-                            <input value={rule.keyword} type="text" name="keyword" id="keyword" autoComplete="keyword" onChange={this.onKeywordChange}
-                                placeholder="keyword"
+                            <input value={rule.keyword || ""} type="text" name="keyword" id="keyword" onChange={this.onKeywordChange} placeholder="keyword"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -66,7 +65,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                     <Tooltip id="tag" title="tag" description={DESC.TagDesc} />
                                 </div>
                             </div>
-                            <input value={rule.tag} type="text" name="tag" id="tag" autoComplete="tag" onChange={this.onTagChange}
+                            <input value={rule.tag || ""} type="text" name="tag" id="tag" onChange={this.onTagChange}
                                 placeholder="a simple short string to identify the rule"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -79,8 +78,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <Tooltip id="hashtags" title="hashtags" description={DESC.HashtagsDesc} />
                             </div>
                             
-                            <input value={rule.hashtags} type="text" name="hashtags" id="hashtags" autoComplete="given-name" onChange={this.onHashtagsChange}
-                                placeholder="hashtags"
+                            <input value={rule.hashtags || ""} type="text" name="hashtags" id="hashtags" onChange={this.onHashtagsChange} placeholder="hashtags"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -101,8 +99,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 </label>
                                 <Tooltip id="user" title="user" description={DESC.UserDesc} />
                             </div>
-                            <input value={rule.mentionedUserId} type="text" name="user" id="user" autoComplete="user" onChange={this.onUserChange}
-                                placeholder="@username"
+                            <input value={rule.mentionedUserId || ""} type="text" name="user" id="user" onChange={this.onUserChange} placeholder="@username"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -113,8 +110,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 </label>
                                 <Tooltip id="from-user" title="from a specific user" description={DESC.FromUserDesc} />
                             </div>
-                            <input value={rule.fromUser} type="text" name="from-user" id="from-user" autoComplete="from-user" onChange={this.onFromUserChange}
-                                placeholder="username or user id"
+                            <input value={rule.fromUser || ""} type="text" name="from-user" id="from-user" onChange={this.onFromUserChange} placeholder="username or user id"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -125,8 +121,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 </label>
                                 <Tooltip id="to-user" title="in reply to a particular user" description={DESC.ToUserDesc} />
                             </div>
-                            <input value={rule.toUser} type="text" name="to-user" id="to-user" autoComplete="to-user" onChange={this.onToUserChange}
-                                placeholder="username or user id"
+                            <input value={rule.toUser || ""} type="text" name="to-user" id="to-user" onChange={this.onToUserChange} placeholder="username or user id"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
 
@@ -137,7 +132,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 </label>
                                 <Tooltip id="retweet-of-user" title="Retweets of the specified user" description={DESC.RetweetsOfUserDesc} />
                             </div>
-                            <input value={rule.retweetsOfUser} type="text" name="retweet-of-user" id="retweet-of-user" autoComplete="retweet-of-user" onChange={this.onRetweetOfUserChange}
+                            <input value={rule.retweetsOfUser || ""} type="text" name="retweet-of-user" id="retweet-of-user" onChange={this.onRetweetOfUserChange}
                                 placeholder="username or user id"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -153,8 +148,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                                     https://
                                 </span>
-                                <input value={rule.url} type="text" name="url" id="url" onChange={this.onUrlChange}
-                                    placeholder="url"
+                                <input value={rule.url || ""} type="text" name="url" id="url" onChange={this.onUrlChange} placeholder="url"
                                     className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"/>
                             </div>
                         </div>
@@ -166,7 +160,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 </label>
                                 <Tooltip id="conversation-id" title="conversation ID" description={DESC.ConversationIdDesc} />
                             </div>
-                            <input value={rule.conversationId} type="text" name="conversation" id="conversation" onChange={this.onConversationIdChange}
+                            <input value={rule.conversationId || ""} type="text" name="conversation" id="conversation" onChange={this.onConversationIdChange}
                                 placeholder="conversation ID"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -178,7 +172,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 </label>
                                 <Tooltip id="context" title="context" description={DESC.ContextDesc} />
                             </div>
-                            <input value={rule.context} type="text" name="context" id="context" onChange={this.onContextChange}
+                            <input value={rule.context || ""} type="text" name="context" id="context" onChange={this.onContextChange}
                                 placeholder="domain id and/or domain id, enitity id pair"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
@@ -190,8 +184,7 @@ export class RuleSearchForm extends React.PureComponent<SearchFormProps, SearchF
                                 </label>
                                 <Tooltip id="entity" title="entity" description={DESC.EntityDesc} />
                             </div>
-                            <input value={rule.entity} type="text" name="entity" id="entity" onChange={this.onEntityChange}
-                                placeholder="entity"
+                            <input value={rule.entity || ""} type="text" name="entity" id="entity" onChange={this.onEntityChange} placeholder="entity"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
                         </div>
                     </div>
