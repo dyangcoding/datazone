@@ -47,7 +47,7 @@ export function loadTweets(): ThunkAction<Action> {
     return dispatch => {
         dispatch({type: ActionType.LoadTweetsStartedAction});
         fetchTweets().then(
-            results => dispatch({type: ActionType.LoadTweetsCompletedAction, tweets: results}),
+            results => dispatch({type: ActionType.LoadTweetsCompletedAction, tweets: sortTweets(results)}),
             reason => dispatch({type: ActionType.LoadTweetsFailedAction, error: reason})
         );
     }
@@ -58,5 +58,18 @@ export function insertTweet(tweet: TweetProperties): ThunkAction<Action> {
         dispatch({type: ActionType.TweetInsertingStartedAction});
         dispatch({type: ActionType.TweetInsertingCompletedAction, tweet: tweet});
     }
+}
+
+// sort the tweets reversely according the tweet date
+function sortTweets(tweets: TweetProperties[]): TweetProperties[] {
+    if (!tweets) {
+        return [];
+    }
+    return tweets.sort((t1, t2) => {
+        if (!t1.createdAt || !t2.createdAt) {
+            return 0;
+        }
+        return new Date(t2.createdAt).getTime() - new Date(t1.createdAt).getTime();
+    });
 }
 

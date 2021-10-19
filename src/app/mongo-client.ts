@@ -63,5 +63,5 @@ export async function fetchTweets() {
     const collection = await tweetCollection()
     return collection
         .aggregate(pipeline)
-        .then(tweets => tweets as ReadonlyArray<TweetProperties>);
+        .then(tweets => tweets as Array<TweetProperties>);
 }
