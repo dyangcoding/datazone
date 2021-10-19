@@ -24,3 +24,6 @@ yarn-error.log*
 
 # realm settings
 .env
+
+#vs code settings
+.vscode
