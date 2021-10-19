@@ -5,7 +5,7 @@ import optionalMap, { optionalEntries } from "../utils/dropdownUtils";
 import { languageEntries, languageMap } from "../utils/languageUtils";
 
 interface OptionsFormProps {
-    readonly options?: RuleOptionsProperties;
+    readonly options: RuleOptionsProperties;
     readonly onChange?: (value: RuleOptionsProperties) => void;
 }
 
@@ -18,7 +18,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
         super(props);
 
         this.state = {
-            options: props.options || {language: "English", sample: 30} as RuleOptionsProperties
+            options: props.options
         };
 
         this.onIsRetweetChange = this.onIsRetweetChange.bind(this);
@@ -37,6 +37,7 @@ export class OptionsSearchForm extends React.PureComponent<OptionsFormProps, Opt
 
     public render(): React.ReactNode {
         const options = this.state.options;
+        console.log(options);
         return (
             <div className="mt-5 md:mt-0 md:col-span-2">
                 <div className="px-4 py-5 bg-white space-y-6 sm:p-6">

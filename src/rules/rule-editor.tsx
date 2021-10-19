@@ -33,7 +33,7 @@ class RuleEditorComponent extends React.Component<EditorProps, EditorState> {
 
         this.state = {
             rule: this.props.rule ? this.props.rule : new Rule(),
-            options: this.props.rule && this.props.rule.options ? this.props.rule.options : {},
+            options: this.props.rule && this.props.rule.options ? this.props.rule.options : {language: "en", sample: 30} as RuleOptionsProperties,
             showError: true,
             processing: false,
         }
