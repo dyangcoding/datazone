@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 import { RuleProperties } from "../models/rule";
-import { TweetProperties } from "../models/tweet";
 
 const instance = axios.create({
 	baseURL: "http://localhost:8080/",
@@ -28,9 +27,5 @@ export const RulesClient = {
     requests.post("rules", rule),
   updateRule: (rule: RuleProperties, id: number): Promise<RuleProperties> =>
     requests.put(`rules/${id}`, rule),
-  deleteRule: (id: number): Promise<void> => requests.delete(`posts/${id}`)
-}
-
-export const TweetsClient = {
-  fetchTweets: (): Promise<TweetProperties[]> => requests.get("tweets"),
+  deleteRule: (id: string): Promise<void> => requests.delete(`rules/${id}`)
 }
