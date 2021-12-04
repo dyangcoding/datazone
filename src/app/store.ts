@@ -61,7 +61,7 @@ const rulePipeline = [
       const { documentKey } = rule as globalThis.Realm.Services.MongoDB.DeleteEvent<UpstreamRuleProperties>;
       console.log("documentKeyID: " + documentKey._id.toString())
       if (documentKey) {
-        store.dispatch({type: RuleActionType.RuleDeletedCompletedAction, ruleId: documentKey._id.toString()})
+        store.dispatch({type: RuleActionType.RuleDeletingCompletedAction, ruleId: documentKey._id.toString()})
       }
     }
   })

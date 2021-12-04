@@ -1,7 +1,7 @@
 import React from "react";
 import { Fragment } from "react";
 import { SearchIcon, ChatAltIcon, EmojiSadIcon, AdjustmentsIcon, TrashIcon, XIcon, DownloadIcon } from "@heroicons/react/outline";
-import { RuleProperties } from "../models/rule";
+import { UpstreamRuleProperties } from "../models/rule";
 import { connect } from "react-redux";
 import { RuleEntry } from "../rules/rule-list-entry";
 import { AppState } from "../app/store";
@@ -10,7 +10,7 @@ import { loadRules } from "../rules/actions";
 import { downloads } from "../utils/download";
 
 interface StateProps {
-    readonly rules: ReadonlyArray<RuleProperties>;
+    readonly rules: ReadonlyArray<UpstreamRuleProperties>;
     readonly isLoading: string;
     readonly error: string | undefined;
 }
@@ -171,7 +171,7 @@ export class RuleComponent extends React.Component<RuleProps, RuleState> {
         return (
             <Fragment>
                 <div className="flex justify-between items-center border rounded-md bg-blue-500 text-white px-4 py-5">
-                    <h3 className="text-xl font-bold leading-6 font-medium">Rules</h3>
+                    <h3 className="text-xl leading-6 font-medium">Rules</h3>
                     <p className="mt-1 max-w-2xl text-sm border-2 rounded-full py-3 px-6">{this.props.rules.length}</p>
                 </div>
                 {this.renderErrorMessage()}

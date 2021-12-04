@@ -34,7 +34,7 @@ export function ruleReducer(state: RuleState = initialState, action: Action): Ru
         case ActionType.DeletedRuleFailedAction: {
             return {...state, loading: "failed", error: action.error.message};
         }
-        case ActionType.RuleDeletedCompletedAction: {
+        case ActionType.RuleDeletingCompletedAction: {
             const result = state.value.filter(rule => rule._id !== action.ruleId)
             return {...state, value: result}
         }

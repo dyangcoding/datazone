@@ -14,7 +14,7 @@ export class TweetListEntry extends React.Component<ListEntryProps> {
 
     public render(): React.ReactNode {
         return (
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg cursor-pointer">
+            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                 {this.renderHeader()}
                 {this.renderText()}
                 {this.renderPublicMetrics()}

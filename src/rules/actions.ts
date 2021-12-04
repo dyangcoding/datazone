@@ -20,7 +20,7 @@ export enum ActionType {
     DeleteRuleCompletedAction = "DELETE_RULE_COMPLETED",
     DeletedRuleFailedAction = "DELETE_RULE_FAILED",
 
-    RuleDeletedCompletedAction = "RULE_DELETED_COMPLETED"
+    RuleDeletingCompletedAction = "RULE_DELETED_COMPLETED"
 }
 
 export type Action = LoadRulesStartedAction | LoadRulesCompletedAction | LoadRulesFailedAction 
@@ -85,7 +85,7 @@ export interface DeleteRuleFailedAction {
 }
 
 export interface RuleDeletedCompletedAction {
-    readonly type: ActionType.RuleDeletedCompletedAction;
+    readonly type: ActionType.RuleDeletingCompletedAction;
     readonly ruleId: string;
 }
 
