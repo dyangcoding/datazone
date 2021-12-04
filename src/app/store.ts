@@ -2,6 +2,7 @@ import { ThunkAction as ReduxThunkAction } from "redux-thunk";
 import { ThunkDispatch as ReduxThunkDispatch } from "redux-thunk";
 import { Action, configureStore } from "@reduxjs/toolkit";
 
+import { Action as UIAction } from '../ui/actions';
 import { Action as TweetsAction, ActionType as TweetsActionType} from "../tweets/actions";
 import { Action as RulesAction, ActionType as RuleActionType } from "../rules/actions";
 import { tweetReducer } from "../tweets/reducer";
@@ -9,17 +10,19 @@ import { ruleReducer } from "../rules/reducer";
 import { ruleCollection, tweetCollection } from "./mongo-client";
 import { toTweetProperties, UpstreamTweetProperties } from "../models/tweet";
 import { UpstreamRuleProperties } from "../models/rule";
+import { uiReducer } from '../ui/reducer';
 
 export type ThunkDispatch<A extends Action=Action> = ReduxThunkDispatch<AppState, never, A>
 export type Status = "idle" | "loading" | "inserting" | "deleting" | "completed" | "failed";
 
-export type AppAction = TweetsAction | RulesAction
+export type AppAction = UIAction | TweetsAction | RulesAction
 
 export type ThunkAction<A extends AppAction, R = void> = ReduxThunkAction<R, AppState, never, A>
 export type AsyncThunkAction<A extends AppAction = AppAction, R = void> = ThunkAction<A, PromiseLike<R>>
 
 export const store = configureStore({
   reducer: {
+    ui: uiReducer,
     rules: ruleReducer,
     tweets: tweetReducer,
   }

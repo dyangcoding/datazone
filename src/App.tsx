@@ -5,6 +5,7 @@ import About from "./pages/about";
 import Help from "./pages/help";
 import { Rules } from "./pages/rule";
 import { Tweets } from "./pages/tweet";
+import { Toasts } from './ui/toasts';
 
 const NavHeader: () => JSX.Element = () => (
   <div className="bg-gray-800 text-gray-100 flex justify-between md:hidden">
@@ -68,6 +69,7 @@ export const App = () => {
         <Router>
             <Sidebar />
             <Content />
+            <Toasts />
           </Router>
       </div>
     </div>
