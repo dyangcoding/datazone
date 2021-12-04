@@ -59,7 +59,7 @@ class RuleEditorComponent extends React.Component<EditorProps, EditorState> {
 
     public render(): React.ReactNode {
         return (
-            <div className="max-w-7xl border rounded-md">
+            <div className="w-full border rounded-md">
                 <form className="bg-white sm:p-6 py-6 px-4" onSubmit={this.onSubmit}>
                     {this.renderErrorMessage()}
                     <AccordionItem title="Standard Search" isToggled={this.props.toggleEditor}>
