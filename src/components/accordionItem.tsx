@@ -3,6 +3,7 @@ import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/outline";
 
 export interface ItemProps {
     readonly title: string;
+    readonly isToggled?: Boolean | undefined;
 }
 
 interface ItemState {
@@ -13,7 +14,9 @@ export class AccordionItem extends React.PureComponent<ItemProps, ItemState> {
 
     constructor(props: ItemProps) {
         super(props);
-        this.state = {isToggled: false};
+        this.state = {
+            isToggled: this.props.isToggled ? this.props.isToggled : false
+        };
 
         this.onToggleClick = this.onToggleClick.bind(this);
     }
