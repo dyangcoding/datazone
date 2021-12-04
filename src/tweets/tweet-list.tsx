@@ -47,7 +47,7 @@ class TweetListComponent extends React.Component<TweetListProps> {
         return (
             <div className="py-5 space-y-4">
                 <div className="flex justify-between items-center border rounded-md bg-blue-500 text-white px-4 py-5">
-                    <h3 className="text-xl font-bold leading-6 font-medium">Realtime Tweets</h3>
+                    <h3 className="text-xl leading-6 font-medium">Realtime Tweets</h3>
                     <p className="mt-1 max-w-2xl text-sm border-2 rounded-full py-3 px-6">{this.props.tweets.length}</p>
                 </div>
                 {tweets.map(tweet => {

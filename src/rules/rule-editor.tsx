@@ -8,6 +8,10 @@ import { OptionsSearchForm } from "./options-search-form";
 import { RuleSearchForm } from "./rule-search-form";
 import { addRule } from "./actions";
 
+interface OwnProps {
+    readonly onSubmit?: () => void;
+}
+
 interface StateProps {
     readonly rule?: RuleProperties;
     readonly toggleEditor?: boolean | undefined;
@@ -17,7 +21,7 @@ interface DispatchProps {
     readonly onAddRule: (rule: RuleProperties) => Promise<RuleProperties>;
 }
 
-interface EditorProps extends StateProps, DispatchProps {}
+interface EditorProps extends OwnProps, StateProps, DispatchProps {}
 
 interface EditorState {
     readonly rule: RuleProperties;
@@ -50,7 +54,12 @@ class RuleEditorComponent extends React.Component<EditorProps, EditorState> {
             console.log(rule);
             if (this.props.onAddRule) {
                 this.props.onAddRule(rule).then(
-                    () => this.setState({processing: false}),
+                    () => {
+                        this.setState({processing: false});
+                        if (this.props.onSubmit) {
+                            this.props.onSubmit();
+                        }
+                    },
                     reason => this.setState({showError: true, processing: false, error: reason})
                 );
             }

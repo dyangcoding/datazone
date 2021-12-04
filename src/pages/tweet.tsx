@@ -6,10 +6,18 @@ import { TweetProperties } from "../models/tweet";
 import { AppState } from "../app/store";
 import { connect } from "react-redux";
 import { downloads } from "../utils/download";
+import { ToastProperties } from "../ui/toast";
+import { addToast } from "../ui/actions";
 
-interface TweetProps {
+interface StateProps {
     readonly tweets: ReadonlyArray<TweetProperties>;
 }
+
+interface DispatchProps {
+    readonly addToast: (toast: ToastProperties) => void;
+}
+
+interface TweetProps extends StateProps, DispatchProps {}
 
 interface TweetState {
     readonly toggleEditor: Boolean;
@@ -25,6 +33,7 @@ export class TweetsComponent extends React.Component<TweetProps, TweetState> {
         this.onToggleEditor = this.onToggleEditor.bind(this);
         this.renderSearchSection = this.renderSearchSection.bind(this);
         this.onDownloadClick = this.onDownloadClick.bind(this);
+        this.onSubmitRule = this.onSubmitRule.bind(this);
     }
 
     public render(): React.ReactNode {
@@ -72,7 +81,7 @@ export class TweetsComponent extends React.Component<TweetProps, TweetState> {
 
     private renderSearchSection(): React.ReactNode {
         if (this.state.toggleEditor) {
-            return <RuleEditor />;
+            return <RuleEditor onSubmit={this.onSubmitRule} />;
         }
         return null;
     }
@@ -92,12 +101,32 @@ export class TweetsComponent extends React.Component<TweetProps, TweetState> {
         }
         downloads(tweets, "tweets.json");
     }
+
+    private onSubmitRule(): void {
+        this.setState({toggleEditor: false});
+        this.props.addToast(this.buildToast());
+    }
+
+    private buildToast(): ToastProperties {
+        return {
+            id: Date.now(),
+            title: 'Rule',
+            message: 'You successfully added Rule.',
+            mode: 'success'
+        } as ToastProperties;
+    }
 }
 
-function mapStateToProps(state: AppState): TweetProps {
+function mapStateToProps(state: AppState): StateProps {
     return {
         tweets: state.tweets.value,
     };
 }
 
-export const Tweets = connect(mapStateToProps, null)(TweetsComponent)
+function mapDispatchToProps(dispatch: any): DispatchProps {
+    return {
+        addToast: (toast: ToastProperties) => dispatch(addToast(toast)),
+    };
+}
+
+export const Tweets = connect(mapStateToProps, mapDispatchToProps)(TweetsComponent)
