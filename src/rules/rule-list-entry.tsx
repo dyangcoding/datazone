@@ -4,6 +4,8 @@ import { AdjustmentsIcon } from "@heroicons/react/outline";
 import { connect } from "react-redux";
 import { deleteRule, updateRule } from "./actions";
 import { RuleEditor } from "./rule-editor";
+import { ToastProperties } from "../ui/toast";
+import { addToast } from "../ui/actions";
 
 interface StateProps {
     readonly rule: UpstreamRuleProperties;
@@ -12,6 +14,7 @@ interface StateProps {
 interface DispatchProps {
     readonly onEditRule: (newRule: UpstreamRuleProperties, oldId: number) => Promise<UpstreamRuleProperties>;
     readonly onDeleteRule: (ruleId: string) => Promise<void>;
+    readonly addToast: (toast: ToastProperties) => void;
 }
 
 interface EntryProps extends StateProps, DispatchProps {}
@@ -93,16 +96,29 @@ class RuleEntryComponent extends React.Component<EntryProps, EntryState> {
             return;
         }
         this.props.onDeleteRule(id).then(
-            () => this.setState({processing: false}),
+            () => {
+                this.setState({processing: false});
+                this.props.addToast(this.buildToast());
+            },
             reason => this.setState({showError: true, processing: false, error: reason})
         )
+    }
+
+    private buildToast(): ToastProperties {
+        return {
+            id: Date.now(),
+            title: 'Rule',
+            message: 'You successfully deleted Rule.',
+            mode: 'success'
+        } as ToastProperties;
     }
 }
 
 function mapDispatchToProps(dispatch: any): DispatchProps {
     return {
         onEditRule: (rule: UpstreamRuleProperties, id: number) => dispatch(updateRule(rule, id)),
-        onDeleteRule: (id: string) => dispatch(deleteRule(id))
+        onDeleteRule: (id: string) => dispatch(deleteRule(id)),
+        addToast: (toast: ToastProperties) => dispatch(addToast(toast)),
     };
 }
 
